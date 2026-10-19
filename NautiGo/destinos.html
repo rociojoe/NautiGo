@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinos - NautiGo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- CABECERA -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <div class="logo-info">
+                    <span class="logo-text">NautiGo</span>
+                    <small class="logo-lema">Donde el río se encuentra con el mar, comienza tu aventura.</small>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="destinos.html" class="active">Destino</a></li>
+                    <li><a href="#">Precio</a></li>
+                    <li><a href="#">Reserva</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="login.php" class="btn-login">Iniciar Sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HÉROE DESTINOS -->
+    <section class="hero hero-destinos">
+        <div class="container hero-content">
+            <h1 class="hero-title">Nuestros destinos</h1>
+            <p class="hero-subtitle">Encuentra tu próximo lugar en el Caribe</p>
+        </div>
+    </section>
+
+    <!-- ZONA DE FILTROS + LUGARES -->
+    <section class="destinos-area">
+        <div class="container destinos-layout">
+
+            <aside class="filtro-caja" id="filtro-caja">
+                <button id="btn-filtrar" class="filtrar-toggle" type="button">Filtrar ▾</button>
+
+                <div class="filtro-menu">
+                    <p class="filtro-menu-titulo">Filtrar por:</p>
+
+                    <div class="filtro-opciones">
+                        <button class="filtro-opcion active" type="button" data-filtro="todos">Todos</button>
+                        <button class="filtro-opcion" type="button" data-filtro="playa">Playas</button>
+                        <button class="filtro-opcion" type="button" data-filtro="rio">Ríos</button>
+
+                        <span class="filtro-separador-v"></span>
+
+                        <button class="filtro-opcion" type="button" data-filtro="restaurante">Restaurantes</button>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="destinos-contenido">
+                <div class="lugares-grid" id="lugares-grid"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PIE -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 NautiGo. Todos los derechos reservados.</p>
+            <small class="footer-lema">Navega, explora y enamórate del Caribe guatemalteco.</small>
+        </div>
+    </footer>
+
+    <script>
+        var lugares = [
+            { nombre: "Playa Blanca",           tipo: "playa",       desc: "Arena blanca y aguas tranquilas en Livingston." },
+            { nombre: "Playa Quehueche",        tipo: "playa",       desc: "Playa de arena dorada rodeada de palmeras." },
+            { nombre: "Playa Siete Altares",    tipo: "playa",       desc: "Cascadas y pozas naturales cerca del mar." },
+            { nombre: "Punta Palma",            tipo: "playa",       desc: "Rincón remoto y virgen del Caribe." },
+            { nombre: "Río Dulce",              tipo: "rio",         desc: "Cañón espectacular y manglares." },
+            { nombre: "Siete Altares",          tipo: "rio",         desc: "Cascadas escalonadas de agua dulce." },
+            { nombre: "Laguna de Izabal",       tipo: "rio",         desc: "El lago más grande de Guatemala." },
+            { nombre: "Río Quehueche",          tipo: "rio",         desc: "Río de aguas cristalinas entre la selva." },
+            { nombre: "Restaurante El Manglar", tipo: "restaurante", desc: "Mariscos frescos frente al río." },
+            { nombre: "Restaurante Bahía Azul", tipo: "restaurante", desc: "Cocina caribeña con vista al mar." },
+            { nombre: "Restaurante La Cueva",   tipo: "restaurante", desc: "Tapado de pescado y platos típicos." },
+            { nombre: "Restaurante Paraíso",    tipo: "restaurante", desc: "Comida típica de Livingston." }
+        ];
+
+        var lugaresGrid = document.getElementById('lugares-grid');
+        var filtroActual = 'todos';
+
+        function renderizarLugares() {
+            lugaresGrid.innerHTML = '';
+            var filtrados = lugares.filter(function (l) {
+                return filtroActual === 'todos' || l.tipo === filtroActual;
+            });
+            filtrados.forEach(function (lugar) {
+                var card = document.createElement('article');
+                card.className = 'lugar-card';
+                var etiqueta = lugar.tipo.charAt(0).toUpperCase() + lugar.tipo.slice(1);
+                card.innerHTML =
+                    '<div class="lugar-imagen">' + lugar.nombre + '</div>' +
+                    '<div class="lugar-info">' +
+                        '<span class="lugar-tipo">' + etiqueta + '</span>' +
+                        '<h3>' + lugar.nombre + '</h3>' +
+                        '<p>' + lugar.desc + '</p>' +
+                    '</div>';
+                lugaresGrid.appendChild(card);
+            });
+        }
+
+        var opciones = document.querySelectorAll('.filtro-opcion');
+        opciones.forEach(function (opcion) {
+            opcion.addEventListener('click', function () {
+                opciones.forEach(function (o) { o.classList.remove('active'); });
+                opcion.classList.add('active');
+                filtroActual = opcion.getAttribute('data-filtro');
+                renderizarLugares();
+            });
+        });
+
+        renderizarLugares();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NautiGo | Viajes en Lancha por el Caribe</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <div class="logo-info">
+                    <span class="logo-text">NautiGo</span>
+                    <small class="logo-lema">Donde el río se encuentra con el mar, comienza tu aventura.</small>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#" id="link-inicio" class="active">Inicio</a></li>
+                    <li><a href="#" id="link-destino">Destino</a></li>
+                    <li><a href="#">Precio</a></li>
+                    <li><a href="#">Reserva</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#" id="link-mis-reservas">Mis reservas</a></li>
+                    <li id="header-usuario"></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- VISTA 1: INICIO -->
+    <main id="vista-inicio">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Descubre el Caribe</h1>
+                    <p class="hero-subtitle">Desde Livingston a Izabal</p>
+                    <a href="#" class="btn-cta">Reserva ahora</a>
+                </div>
+                <div class="hero-photo-wrap">
+                    <div class="hero-carousel" id="heroCarousel">
+                        <div class="carousel-slide" data-slide="0">
+                            <img src="img/hero-boat.jpg" alt="Lancha 1">
+                        </div>
+                        <div class="carousel-slide active" data-slide="1">
+                            <img src="img/hero-boat2.jpg" alt="Lancha 2">
+                        </div>
+                        <div class="carousel-slide" data-slide="2">
+                            <img src="img/hero-boat3.jpg" alt="Lancha 3">
+                        </div>
+                        <button class="carousel-arrow carousel-arrow--prev" id="carouselPrev" aria-label="Anterior">‹</button>
+                        <button class="carousel-arrow carousel-arrow--next" id="carouselNext" aria-label="Siguiente">›</button>
+                        <div class="carousel-dots" id="carouselDots">
+                            <button class="carousel-dot" data-slide="0" aria-label="1"></button>
+                            <button class="carousel-dot active" data-slide="1" aria-label="2"></button>
+                            <button class="carousel-dot" data-slide="2" aria-label="3"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-wave">
+                <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+                    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"></path>
+                </svg>
+            </div>
+        </section>
+
+        <div class="wave-separator wave-separator--to-niebla">
+            <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+                <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z"></path>
+            </svg>
+        </div>
+
+        <section class="destinos" id="destinos">
+            <div class="container">
+                <h2 class="section-title">Destinos populares</h2>
+                <p class="section-subtitle">Los rincones más queridos del Caribe guatemalteco, elegidos por viajeros como tú.</p>
+                <div class="destinos-grid">
+                    <article class="destino-card" id="card-playa">
+                        <div class="card-image"><img src="img/playa.jpg" alt="Playa"></div>
+                        <div class="card-content"><h3>Playa</h3><p>Ideal para tomar el sol</p></div>
+                    </article>
+                    <article class="destino-card" id="card-siete-altares">
+                        <div class="card-image"><img src="img/siete-altares.jpg" alt="Siete Altares"></div>
+                        <div class="card-content"><h3>Siete Altares</h3><p>Ideal para la selva</p></div>
+                    </article>
+                    <article class="destino-card" id="card-rio-dulce">
+                        <div class="card-image"><span class="placeholder-text">Río Dulce</span></div>
+                        <div class="card-content"><h3>Río Dulce</h3><p>Cañón de río y naturaleza</p></div>
+                    </article>
+                    <article class="destino-card" id="card-punta-palma">
+                        <div class="card-image"><span class="placeholder-text">Punta Palma</span></div>
+                        <div class="card-content"><h3>Punta Palma</h3><p>Un rincón remoto</p></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="wave-separator wave-separator--light-to-dark">
+            <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+                <path d="M0,30 C240,0 480,60 720,30 C960,0 1200,60 1440,30 L1440,60 L0,60 Z"></path>
+            </svg>
+        </div>
+    </main>
+
+    <!-- VISTA 2: DESTINOS -->
+    <main id="vista-destinos" class="oculto">
+        <section class="hero hero-destinos">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Nuestros destinos</h1>
+                    <p class="hero-subtitle">Encuentra tu próximo lugar en el Caribe</p>
+                </div>
+            </div>
+        </section>
+        <div class="wave-separator wave-separator--dark-to-light">
+            <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+                <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z"></path>
+            </svg>
+        </div>
+        <section class="destinos-area">
+            <div class="container destinos-layout">
+                <aside class="filtro-caja" id="filtro-caja">
+                    <button id="btn-filtrar" class="filtrar-toggle" type="button">Filtrar ▾</button>
+                    <div class="filtro-menu">
+                        <p class="filtro-menu-titulo">Filtrar por:</p>
+                        <div class="filtro-opciones">
+                            <button class="filtro-opcion active" type="button" data-filtro="todos">Todos</button>
+                            <button class="filtro-opcion" type="button" data-filtro="playa">Playas</button>
+                            <button class="filtro-opcion" type="button" data-filtro="rio">Ríos</button>
+                        </div>
+                    </div>
+                </aside>
+                <div class="destinos-contenido">
+                    <div class="lugares-grid" id="lugares-grid"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- VISTA 3: DETALLE -->
+    <main id="vista-detalle" class="oculto">
+        <section class="detalle-hero">
+            <img id="detalle-imagen" src="" alt="">
+            <div class="detalle-overlay">
+                <span id="detalle-tipo" class="lugar-tipo"></span>
+                <h1 id="detalle-nombre"></h1>
+                <p id="detalle-ubicacion"></p>
+            </div>
+        </section>
+        <section class="detalle-area">
+            <div class="container detalle-layout">
+                <div class="detalle-principal">
+                    <button id="btn-volver" class="btn-volver">← Volver</button>
+                    <h2 class="detalle-subtitulo">Sobre este destino</h2>
+                    <p id="detalle-descripcion" class="detalle-texto"></p>
+                    <div class="detalle-cols">
+                        <div class="detalle-col"><h3>✅ Incluye</h3><ul id="detalle-incluye"></ul></div>
+                        <div class="detalle-col"><h3>❌ No incluye</h3><ul id="detalle-no-incluye"></ul></div>
+                    </div>
+                    <h2 class="detalle-subtitulo">Hoteles cercanos</h2>
+                    <div id="detalle-hoteles" class="detalle-hoteles"></div>
+                </div>
+                <aside class="detalle-panel">
+                    <h3>Calcula tu viaje</h3>
+                    <label class="campo"><span>Fecha</span><input type="date" id="detalle-fecha"></label>
+                    <div class="campo-doble">
+                        <label class="campo"><span>Adultos</span><input type="number" id="detalle-adultos" min="1" max="12" value="2"></label>
+                        <label class="campo"><span>Niños</span><input type="number" id="detalle-ninos" min="0" max="12" value="0"></label>
+                    </div>
+                    <label class="campo"><span>Lancha</span><select id="detalle-lancha"></select></label>
+                    <label class="campo checkbox-campo"><input type="checkbox" id="detalle-con-hotel"><span>Agregar hotel</span></label>
+                    <div id="detalle-hotel-selector" class="oculto">
+                        <label class="campo"><span>Hotel</span><select id="detalle-hotel"></select></label>
+                        <label class="campo"><span>Noches</span><input type="number" id="detalle-noches" min="1" max="30" value="1"></label>
+                    </div>
+                    <div class="detalle-desglose" id="detalle-desglose"></div>
+                    <button class="btn-cta detalle-btn-reservar" id="detalle-btn-reservar">Reservar ahora</button>
+                    <p id="detalle-temporada-info" class="detalle-temporada-info"></p>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <!-- VISTA 4: FORMULARIO -->
+    <main id="vista-formulario" class="oculto">
+        <section class="form-reserva-area">
+            <div class="container">
+                <button id="form-btn-volver" class="btn-volver">← Volver al detalle</button>
+                <div class="form-reserva-layout">
+                    <div class="form-reserva-principal">
+                        <h1 class="form-reserva-titulo">Completa tu reserva</h1>
+                        <p class="form-reserva-sub">Solo faltan tus datos para confirmar el viaje.</p>
+                        <form id="form-reserva" novalidate>
+                            <div class="campo"><label for="form-nombre">Nombre completo *</label><input type="text" id="form-nombre" required placeholder="Ej: Ana García"></div>
+                            <div class="campo-doble">
+                                <div class="campo"><label for="form-email">Correo electrónico *</label><input type="email" id="form-email" required placeholder="ana@correo.com"></div>
+                                <div class="campo"><label for="form-telefono">Teléfono *</label><input type="tel" id="form-telefono" required placeholder="5555-1234"></div>
+                            </div>
+                            <div class="campo"><label for="form-notas">Notas adicionales (opcional)</label><textarea id="form-notas" rows="3" placeholder="Alergias, requerimientos especiales..."></textarea></div>
+                            <div id="form-error" class="form-error oculto"></div>
+                            <button type="submit" class="btn-cta form-btn-confirmar">Confirmar reserva</button>
+                        </form>
+                    </div>
+                    <aside class="form-reserva-resumen">
+                        <h3>Resumen de tu viaje</h3>
+                        <div id="form-resumen-contenido"></div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- VISTA 5: CONFIRMACIÓN -->
+    <main id="vista-confirmacion" class="oculto">
+        <section class="confirmacion-area">
+            <div class="container confirmacion-contenido">
+                <div class="confirmacion-icono">✓</div>
+                <h1 class="confirmacion-titulo">¡Reserva creada!</h1>
+                <p class="confirmacion-sub">Tu código de reserva es:</p>
+                <div class="confirmacion-codigo" id="confirmacion-codigo"></div>
+                <p class="confirmacion-estado">Estado: <strong>Pendiente de confirmación por el lanchero</strong></p>
+                <div class="confirmacion-detalle" id="confirmacion-detalle"></div>
+                <div class="confirmacion-acciones">
+                    <button id="btn-ver-mis-reservas" class="btn-cta">Ver mis reservas</button>
+                    <button id="btn-volver-inicio" class="btn-secundario">Volver al inicio</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- VISTA 6: MIS RESERVAS -->
+    <main id="vista-mis-reservas" class="oculto">
+        <section class="mis-reservas-area">
+            <div class="container">
+                <button id="mis-reservas-volver" class="btn-volver">← Volver</button>
+                <h1 class="mis-reservas-titulo">Mis reservas</h1>
+                <p class="mis-reservas-sub">Estas son las reservas guardadas en este navegador.</p>
+                <div id="mis-reservas-lista" class="mis-reservas-lista"></div>
+                <p id="mis-reservas-vacio" class="mis-reservas-vacio oculto">Aún no tienes reservas. ¡Explora los destinos y reserva tu primer viaje!</p>
+            </div>
+        </section>
+    </main>
+<!-- VISTA: LOGIN -->
+<main id="vista-login" class="oculto">
+    <section class="auth-area">
+        <div class="container auth-layout">
+            <div class="auth-card">
+                <h1 class="auth-titulo">Iniciar sesión</h1>
+                <p class="auth-sub">Bienvenido de vuelta a NautiGo</p>
+                <form id="form-login">
+                    <div class="campo">
+                        <label for="login-email">Correo electrónico</label>
+                        <input type="email" id="login-email" required placeholder="tu@correo.com">
+                    </div>
+                    <div class="campo">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" required placeholder="••••••">
+                    </div>
+                    <div id="login-error" class="form-error oculto"></div>
+                    <button type="submit" class="btn-cta auth-btn">Entrar</button>
+                </form>
+                <p class="auth-alt">
+                    ¿No tienes cuenta?
+                    <a href="#" id="ir-registro">Regístrate aquí</a>
+                </p>
+                <p class="auth-admin-hint">
+                    <small>Admin demo: <strong>admin@nautigo.com</strong> / <strong>admin123</strong></small>
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- VISTA: REGISTRO -->
+<main id="vista-registro" class="oculto">
+    <section class="auth-area">
+        <div class="container auth-layout">
+            <div class="auth-card auth-card-wide">
+                <h1 class="auth-titulo">Crear cuenta</h1>
+                <p class="auth-sub">Únete a NautiGo como cliente o lanchero</p>
+
+                <div class="reg-tabs">
+                    <button type="button" class="reg-tab active" data-rol="cliente">👤 Cliente</button>
+                    <button type="button" class="reg-tab" data-rol="lanchero">🚤 Lanchero</button>
+                </div>
+
+                <input type="hidden" id="reg-rol" value="cliente">
+
+                <form id="form-registro">
+                    <div class="campo">
+                        <label for="reg-nombre">Nombre completo *</label>
+                        <input type="text" id="reg-nombre" required placeholder="Ana García">
+                    </div>
+                    <div class="campo-doble">
+                        <div class="campo">
+                            <label for="reg-email">Correo *</label>
+                            <input type="email" id="reg-email" required placeholder="ana@correo.com">
+                        </div>
+                        <div class="campo">
+                            <label for="reg-telefono">Teléfono</label>
+                            <input type="tel" id="reg-telefono" placeholder="5555-1234">
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="reg-password">Contraseña * (mín. 6 caracteres)</label>
+                        <input type="password" id="reg-password" required placeholder="••••••" minlength="6">
+                    </div>
+
+                    <div id="reg-campos-lanchero" class="oculto">
+                        <h3 class="reg-seccion">Datos de tu lancha</h3>
+                        <div class="campo">
+                            <label for="reg-lancha-nombre">Nombre de la lancha</label>
+                            <input type="text" id="reg-lancha-nombre" placeholder="Ej: La Perla">
+                        </div>
+                        <div class="campo-doble">
+                            <div class="campo">
+                                <label for="reg-lancha-capacidad">Capacidad (personas)</label>
+                                <input type="number" id="reg-lancha-capacidad" value="8" min="1" max="30">
+                            </div>
+                            <div class="campo">
+                                <label for="reg-lancha-motor">Motor (HP)</label>
+                                <input type="number" id="reg-lancha-motor" value="40" min="5" max="300">
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <label for="reg-lancha-gasolina">Costo gasolina por hora (Q)</label>
+                            <input type="number" id="reg-lancha-gasolina" value="80" min="10" step="5">
+                        </div>
+                    </div>
+
+                    <div id="reg-error" class="form-error oculto"></div>
+                    <button type="submit" class="btn-cta auth-btn">Registrarme</button>
+                </form>
+                <p class="auth-alt">
+                    ¿Ya tienes cuenta?
+                    <a href="#" id="ir-login">Inicia sesión</a>
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- VISTA: PANEL LANCHEO -->
+<main id="vista-panel-lanchero" class="oculto">
+    <section class="panel-area">
+        <div class="container">
+            <button class="btn-volver" onclick="mostrarInicio()">← Volver al inicio</button>
+            <h1 class="panel-titulo">Panel del Lanchero</h1>
+            <p class="panel-sub">Gestiona tu cuenta y revisa tus reservas</p>
+
+            <div class="panel-grid">
+                <div class="panel-card">
+                    <h3>Mi cuenta</h3>
+                    <p><strong>Nombre:</strong> <span id="pl-nombre"></span></p>
+                    <p><strong>Email:</strong> <span id="pl-email"></span></p>
+                    <p><strong>Estado:</strong> <span id="pl-estado"></span></p>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Mi lancha</h3>
+                    <p><strong>Nombre:</strong> <span id="pl-lancha-nombre"></span></p>
+                    <p><strong>Capacidad:</strong> <span id="pl-lancha-capacidad"></span></p>
+                    <p><strong>Motor:</strong> <span id="pl-lancha-motor"></span></p>
+                    <p><strong>Gasolina:</strong> <span id="pl-lancha-gasolina"></span></p>
+                    <p><strong>Activa:</strong> <span id="pl-lancha-activa"></span></p>
+                </div>
+            </div>
+
+            <h2 class="panel-seccion">Mis reservas</h2>
+            <div id="pl-reservas" class="panel-lista"></div>
+        </div>
+    </section>
+</main>
+
+<!-- VISTA: PANEL ADMIN -->
+<main id="vista-panel-admin" class="oculto">
+    <section class="panel-area">
+        <div class="container">
+            <button class="btn-volver" onclick="mostrarInicio()">← Volver al inicio</button>
+            <h1 class="panel-titulo">Panel de Administración</h1>
+            <p class="panel-sub">Gestiona lancheros, hoteles y reservas</p>
+
+            <h2 class="panel-seccion">🚤 Lancheros</h2>
+            <div id="admin-lancheros" class="panel-lista"></div>
+
+            <h2 class="panel-seccion">🏨 Hoteles</h2>
+            <form id="form-hotel-admin" class="admin-form-hotel">
+                <div class="campo-doble">
+                    <div class="campo">
+                        <label>Nombre</label>
+                        <input type="text" id="hotel-nombre" required placeholder="Hotel Paraíso">
+                    </div>
+                    <div class="campo">
+                        <label>Categoría</label>
+                        <select id="hotel-categoria">
+                            <option value="economico">Económico</option>
+                            <option value="medio" selected>Medio</option>
+                            <option value="boutique">Boutique</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="campo-doble">
+                    <div class="campo">
+                        <label>Precio por noche (Q)</label>
+                        <input type="number" id="hotel-precio" required min="50" step="50">
+                    </div>
+                    <div class="campo">
+                        <label>Estrellas (1-5)</label>
+                        <input type="number" id="hotel-estrellas" min="1" max="5" value="3">
+                    </div>
+                </div>
+                <div class="campo">
+                    <label>Ubicación</label>
+                    <input type="text" id="hotel-ubicacion" placeholder="Livingston centro">
+                </div>
+                <div class="campo">
+                    <label>Descripción</label>
+                    <textarea id="hotel-descripcion" rows="2" placeholder="Hotel con vista al mar..."></textarea>
+                </div>
+                <button type="submit" class="btn-cta">Agregar hotel</button>
+            </form>
+            <div id="admin-hoteles" class="panel-lista"></div>
+
+            <h2 class="panel-seccion">📋 Todas las reservas</h2>
+            <div id="admin-reservas" class="panel-lista"></div>
+        </div>
+    </section>
+</main>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 NautiGo. Todos los derechos reservados.</p>
+            <small class="footer-lema">Navega, explora y enamórate del Caribe guatemalteco.</small>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="datos.js"></script>
+    <script>
+        /* NAVEGACIÓN */
+        var vistaInicio      = document.getElementById('vista-inicio');
+        var vistaDestinos    = document.getElementById('vista-destinos');
+        var vistaDetalle     = document.getElementById('vista-detalle');
+        var vistaFormulario  = document.getElementById('vista-formulario');
+        var vistaConfirmacion= document.getElementById('vista-confirmacion');
+        var vistaMisReservas = document.getElementById('vista-mis-reservas');
+        var linkInicio       = document.getElementById('link-inicio');
+        var linkDestino      = document.getElementById('link-destino');
+
+        function ocultarTodas() {
+            vistaInicio.classList.add('oculto');
+            vistaDestinos.classList.add('oculto');
+            vistaDetalle.classList.add('oculto');
+            vistaFormulario.classList.add('oculto');
+            vistaConfirmacion.classList.add('oculto');
+            vistaMisReservas.classList.add('oculto');
+        }
+
+        function mostrarInicio(e) {
+            if (e) e.preventDefault();
+            ocultarTodas();
+            vistaInicio.classList.remove('oculto');
+            linkInicio.classList.add('active');
+            linkDestino.classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+
+        function mostrarDestinos(e) {
+            if (e) e.preventDefault();
+            ocultarTodas();
+            vistaDestinos.classList.remove('oculto');
+            linkDestino.classList.add('active');
+            linkInicio.classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+
+        linkInicio.addEventListener('click', mostrarInicio);
+        linkDestino.addEventListener('click', mostrarDestinos);
+
+        /* LUGARES */
+        var lugaresGrid = document.getElementById('lugares-grid');
+        var filtroActual = 'todos';
+        var observerLugares = null;
+        var detalleActualId = null;
+        var reservaEnProceso = null;
+
+        function observarTarjetas() {
+            var cards = document.querySelectorAll('.lugar-card:not(.visible)');
+            if (!('IntersectionObserver' in window)) {
+                cards.forEach(function (c) { c.classList.add('visible'); });
+                return;
+            }
+            if (!observerLugares) {
+                observerLugares = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observerLugares.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+            }
+            cards.forEach(function (c) { observerLugares.observe(c); });
+        }
+
+        function renderizarLugares() {
+            lugaresGrid.innerHTML = '';
+            var filtrados = destinos.filter(function (l) {
+                return filtroActual === 'todos' || l.tipo === filtroActual;
+            });
+            filtrados.forEach(function (lugar, i) {
+                var card = document.createElement('article');
+                card.className = 'lugar-card';
+                card.style.animationDelay = (i * 0.08) + 's';
+                card.setAttribute('data-id', lugar.id);
+                var etiqueta = lugar.tipo.charAt(0).toUpperCase() + lugar.tipo.slice(1);
+                card.innerHTML =
+                    '<div class="lugar-imagen">' + lugar.nombre + '</div>' +
+                    '<div class="lugar-info">' +
+                        '<span class="lugar-tipo">' + etiqueta + '</span>' +
+                        '<h3>' + lugar.nombre + '</h3>' +
+                        '<p>' + lugar.descripcionCorta + '</p>' +
+                    '</div>';
+                card.addEventListener('click', function () { abrirDetalle(lugar.id); });
+                lugaresGrid.appendChild(card);
+            });
+            observarTarjetas();
+        }
+
+        var opciones = document.querySelectorAll('.filtro-opcion');
+        opciones.forEach(function (opcion) {
+            opcion.addEventListener('click', function () {
+                opciones.forEach(function (o) { o.classList.remove('active'); });
+                opcion.classList.add('active');
+                filtroActual = opcion.getAttribute('data-filtro');
+                renderizarLugares();
+            });
+        });
+
+        renderizarLugares();
+
+        /* PARALLAX */
+        (function () {
+            var root = document.documentElement;
+            var header = document.querySelector('.header');
+            var ticking = false;
+            function onScroll() {
+                var y = window.scrollY || window.pageYOffset;
+                root.style.setProperty('--scroll-y', y + 'px');
+                if (y > 40) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+                ticking = false;
+            }
+            window.addEventListener('scroll', function () {
+                if (!ticking) {
+                    window.requestAnimationFrame(onScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+            onScroll();
+        })();
+
+        /* CARRUSEL */
+        (function () {
+            var carrusel = document.getElementById('heroCarousel');
+            if (!carrusel) return;
+            var slides = carrusel.querySelectorAll('.carousel-slide');
+            var dots   = carrusel.querySelectorAll('.carousel-dot');
+            var prev   = document.getElementById('carouselPrev');
+            var next   = document.getElementById('carouselNext');
+            var actual = 1, total = slides.length, intervalo = null, tiempoAuto = 5000, pausado = false, animando = false;
+
+            function irA(indice) {
+                if (animando) return;
+                if (indice < 0) indice = total - 1;
+                if (indice >= total) indice = 0;
+                if (indice === actual) return;
+                animando = true;
+                slides.forEach(function (s, i) { s.classList.toggle('active', i === indice); });
+                dots.forEach(function (d, i) { d.classList.toggle('active', i === indice); });
+                actual = indice;
+                setTimeout(function () { animando = false; }, 720);
+            }
+            function siguiente() { irA(actual + 1); }
+            function anterior()  { irA(actual - 1); }
+
+            next.addEventListener('click', function () { siguiente(); reiniciarAuto(); });
+            prev.addEventListener('click', function () { anterior(); reiniciarAuto(); });
+
+            slides.forEach(function (slide, i) {
+                slide.addEventListener('click', function () { irA(i); reiniciarAuto(); });
+            });
+            dots.forEach(function (dot) {
+                dot.addEventListener('click', function () { irA(parseInt(dot.getAttribute('data-slide'), 10)); reiniciarAuto(); });
+            });
+
+            function iniciarAuto() {
+                detenerAuto();
+                intervalo = setInterval(function () { if (!pausado && !animando) siguiente(); }, tiempoAuto);
+            }
+            function detenerAuto() { if (intervalo) { clearInterval(intervalo); intervalo = null; } }
+            function reiniciarAuto() { iniciarAuto(); }
+
+            carrusel.addEventListener('mouseenter', function () { pausado = true; });
+            carrusel.addEventListener('mouseleave', function () { pausado = false; });
+
+            document.addEventListener('keydown', function (e) {
+                if (vistaInicio.classList.contains('oculto')) return;
+                if (e.key === 'ArrowLeft')  { anterior();  reiniciarAuto(); }
+                if (e.key === 'ArrowRight') { siguiente(); reiniciarAuto(); }
+            });
+
+            var touchStartX = 0;
+            carrusel.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+            carrusel.addEventListener('touchend', function (e) {
+                var diff = e.changedTouches[0].screenX - touchStartX;
+                if (Math.abs(diff) > 40) { if (diff < 0) siguiente(); else anterior(); reiniciarAuto(); }
+            }, { passive: true });
+
+            iniciarAuto();
+        })();
+
+        /* DETALLE */
+        function hoyISO() {
+            var d = new Date();
+            return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+        }
+
+        function abrirDetalle(destinoId) {
+            var destino = destinos.find(function (d) { return d.id === destinoId; });
+            if (!destino) return;
+            var tour = tourDeDestino(destinoId);
+            if (!tour) return;
+            detalleActualId = destinoId;
+
+            document.getElementById('detalle-imagen').src = destino.imagen;
+            document.getElementById('detalle-imagen').alt = destino.nombre;
+            document.getElementById('detalle-nombre').textContent = destino.nombre;
+            document.getElementById('detalle-tipo').textContent = destino.tipo;
+            document.getElementById('detalle-ubicacion').textContent = '📍 ' + destino.ubicacion;
+            document.getElementById('detalle-descripcion').textContent = destino.descripcionLarga;
+
+            var ulIncluye = document.getElementById('detalle-incluye');
+            var ulNo = document.getElementById('detalle-no-incluye');
+            ulIncluye.innerHTML = '';
+            ulNo.innerHTML = '';
+            destino.incluye.forEach(function (i) { var li = document.createElement('li'); li.textContent = i; ulIncluye.appendChild(li); });
+            destino.noIncluye.forEach(function (i) { var li = document.createElement('li'); li.textContent = i; ulNo.appendChild(li); });
+
+            var contHoteles = document.getElementById('detalle-hoteles');
+            contHoteles.innerHTML = '';
+            hoteles.forEach(function (h) {
+                var estrellas = '★'.repeat(h.estrellas) + '☆'.repeat(5 - h.estrellas);
+                var div = document.createElement('div');
+                div.className = 'hotel-mini';
+                div.innerHTML =
+                    '<span class="categoria">' + h.categoria + '</span>' +
+                    '<h4>' + h.nombre + '</h4>' +
+                    '<div class="estrellas">' + estrellas + '</div>' +
+                    '<div class="precio">' + Q(h.precioNoche) + ' <small>/noche</small></div>';
+                contHoteles.appendChild(div);
+            });
+
+            document.getElementById('detalle-fecha').value = hoyISO();
+            document.getElementById('detalle-fecha').min = hoyISO();
+            document.getElementById('detalle-adultos').value = Math.max(tour.minPersonas || 1, 2);
+            document.getElementById('detalle-ninos').value = 0;
+
+            var selectLancha = document.getElementById('detalle-lancha');
+            selectLancha.innerHTML = '';
+            lanchas.filter(function (l) { return l.activa; }).forEach(function (l) {
+                var lanchero = lancheroDeLancha(l.id);
+                var opt = document.createElement('option');
+                opt.value = l.id;
+                opt.textContent = l.nombre + ' — ' + lanchero.nombre + ' (cap. ' + l.capacidad + ')';
+                selectLancha.appendChild(opt);
+            });
+
+            var selectHotel = document.getElementById('detalle-hotel');
+            selectHotel.innerHTML = '';
+            hoteles.forEach(function (h) {
+                var opt = document.createElement('option');
+                opt.value = h.id;
+                opt.textContent = h.nombre + ' — ' + Q(h.precioNoche) + '/noche';
+                selectHotel.appendChild(opt);
+            });
+
+            document.getElementById('detalle-con-hotel').checked = false;
+            document.getElementById('detalle-hotel-selector').classList.add('oculto');
+            document.getElementById('detalle-noches').value = 1;
+
+            actualizarDesglose();
+
+            ocultarTodas();
+            vistaDetalle.classList.remove('oculto');
+            window.scrollTo(0, 0);
+        }
+
+        function actualizarDesglose() {
+            if (!detalleActualId) return;
+            var tour = tourDeDestino(detalleActualId);
+            var fecha = document.getElementById('detalle-fecha').value || hoyISO();
+            var adultos = parseInt(document.getElementById('detalle-adultos').value, 10) || 1;
+            var ninos = parseInt(document.getElementById('detalle-ninos').value, 10) || 0;
+            var lanchaId = document.getElementById('detalle-lancha').value;
+            var conHotel = document.getElementById('detalle-con-hotel').checked;
+            var hotelId = conHotel ? document.getElementById('detalle-hotel').value : null;
+            var noches = conHotel ? (parseInt(document.getElementById('detalle-noches').value, 10) || 1) : 0;
+
+            var resultado = calcularPrecioReserva({
+                tourId: tour.id, lanchaId: lanchaId, fecha: fecha,
+                adultos: adultos, ninos: ninos, hotelId: hotelId, noches: noches
+            });
+
+            var d = resultado.desglose;
+            var html = '';
+
+            if (tour.tipoPrecio === 'persona') {
+                html += '<div class="desglose-linea"><span>' + adultos + ' adulto(s) × ' + Q(tour.precioAdulto) + '</span><span>' + Q(tour.precioAdulto * adultos) + '</span></div>';
+                if (ninos > 0) {
+                    html += '<div class="desglose-linea"><span>' + ninos + ' niño(s) × ' + Q(tour.precioNino) + '</span><span>' + Q(tour.precioNino * ninos) + '</span></div>';
+                }
+            } else {
+                html += '<div class="desglose-linea"><span>Lancha completa</span><span>' + Q(tour.precioLancha) + '</span></div>';
+            }
+
+            html += '<div class="desglose-linea"><span>⛽ Gasolina</span><span>' + Q(d.gasolina) + '</span></div>';
+
+            if (d.costoHotel > 0) {
+                html += '<div class="desglose-linea"><span>🏨 Hotel (' + noches + ' noche' + (noches > 1 ? 's' : '') + ')</span><span>' + Q(d.costoHotel) + '</span></div>';
+            }
+            if (d.multiplicador !== 1) {
+                html += '<div class="desglose-linea"><span>Temporada (' + resultado.temporada.nombre + ' ×' + d.multiplicador + ')</span><span>' + Q(d.total - d.subtotal) + '</span></div>';
+            }
+            html += '<div class="desglose-linea desglose-total"><span>Total</span><span>' + Q(d.total) + '</span></div>';
+            document.getElementById('detalle-desglose').innerHTML = html;
+
+            var info = document.getElementById('detalle-temporada-info');
+            info.textContent = resultado.temporada.nombre + ' (×' + resultado.temporada.multiplicador + ')';
+            info.className = 'detalle-temporada-info' + (resultado.temporada.id === 'alta' ? ' alta' : '');
+        }
+
+        ['detalle-fecha','detalle-adultos','detalle-ninos','detalle-lancha','detalle-hotel','detalle-noches'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) { el.addEventListener('input', actualizarDesglose); el.addEventListener('change', actualizarDesglose); }
+        });
+
+        document.getElementById('detalle-con-hotel').addEventListener('change', function () {
+            document.getElementById('detalle-hotel-selector').classList.toggle('oculto', !this.checked);
+            actualizarDesglose();
+        });
+
+        document.getElementById('btn-volver').addEventListener('click', function () {
+            ocultarTodas();
+            vistaDestinos.classList.remove('oculto');
+            linkDestino.classList.add('active');
+            linkInicio.classList.remove('active');
+            window.scrollTo(0, 0);
+        });
+
+        /* TARJETAS DESTACADAS DEL INICIO */
+        var mapaTarjetas = {
+            'card-playa': 'playa-blanca',
+            'card-siete-altares': 'siete-altares',
+            'card-rio-dulce': 'rio-dulce',
+            'card-punta-palma': 'punta-palma'
+        };
+        Object.keys(mapaTarjetas).forEach(function (cardId) {
+            var card = document.getElementById(cardId);
+            if (card) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function () { abrirDetalle(mapaTarjetas[cardId]); });
+            }
+        });
+
+        /* RESERVAS */
+        var RESERVAS_KEY = 'nautigo_reservas';
+
+        function leerReservas() {
+            try { var d = localStorage.getItem(RESERVAS_KEY); return d ? JSON.parse(d) : []; }
+            catch (e) { return []; }
+        }
+        function guardarReservas(lista) { localStorage.setItem(RESERVAS_KEY, JSON.stringify(lista)); }
+        function agregarReserva(r) { var l = leerReservas(); l.unshift(r); guardarReservas(l); }
+        function actualizarEstadoReserva(codigo, estado) {
+            var l = leerReservas();
+            var i = l.findIndex(function (r) { return r.codigo === codigo; });
+            if (i >= 0) { l[i].estado = estado; guardarReservas(l); }
+            return i >= 0;
+        }
+        function eliminarReserva(codigo) {
+            var l = leerReservas();
+            l = l.filter(function (r) { return r.codigo !== codigo; });
+            guardarReservas(l);
+        }
+        function generarCodigo() {
+            var year = new Date().getFullYear();
+            var lista = leerReservas();
+            var num = lista.length + 1;
+            var codigo;
+            do {
+                codigo = 'NGO-' + year + '-' + String(num).padStart(4, '0');
+                num++;
+            } while (lista.some(function (r) { return r.codigo === codigo; }));
+            return codigo;
+        }
+
+        function abrirFormulario() {
+            if (!detalleActualId) return;
+            var tour = tourDeDestino(detalleActualId);
+            if (!tour) return;
+
+            var fecha = document.getElementById('detalle-fecha').value;
+            var adultos = parseInt(document.getElementById('detalle-adultos').value, 10) || 1;
+            var ninos = parseInt(document.getElementById('detalle-ninos').value, 10) || 0;
+            var lanchaId = document.getElementById('detalle-lancha').value;
+            var conHotel = document.getElementById('detalle-con-hotel').checked;
+            var hotelId = conHotel ? document.getElementById('detalle-hotel').value : null;
+            var noches = conHotel ? (parseInt(document.getElementById('detalle-noches').value, 10) || 1) : 0;
+
+            var resultado = calcularPrecioReserva({
+                tourId: tour.id, lanchaId: lanchaId, fecha: fecha,
+                adultos: adultos, ninos: ninos, hotelId: hotelId, noches: noches
+            });
+
+            var destino = destinos.find(function (d) { return d.id === detalleActualId; });
+            var lanchero = lancheroDeLancha(lanchaId);
+
+            reservaEnProceso = {
+                destinoId: detalleActualId, destinoNombre: destino.nombre,
+                tourId: tour.id, tourNombre: tour.nombre,
+                lanchaId: lanchaId, lanchaNombre: resultado.lancha.nombre, lancheroNombre: lanchero.nombre,
+                fecha: fecha, adultos: adultos, ninos: ninos,
+                hotelId: hotelId, hotelNombre: resultado.hotel ? resultado.hotel.nombre : null, noches: noches,
+                desglose: resultado.desglose, temporada: resultado.temporada
+            };
+
+            var html = '';
+            html += '<div class="resumen-item"><span>Destino</span><strong>' + destino.nombre + '</strong></div>';
+            html += '<div class="resumen-item"><span>Tour</span><strong>' + tour.nombre + '</strong></div>';
+            html += '<div class="resumen-item"><span>Fecha</span><strong>' + fecha + '</strong></div>';
+            html += '<div class="resumen-item"><span>Lancha</span><strong>' + resultado.lancha.nombre + '</strong></div>';
+            html += '<div class="resumen-item"><span>Lanchero</span><strong>' + lanchero.nombre + '</strong></div>';
+            html += '<div class="resumen-item"><span>Personas</span><strong>' + adultos + ' adulto(s), ' + ninos + ' niño(s)</strong></div>';
+            if (hotelId) {
+                html += '<div class="resumen-item"><span>Hotel</span><strong>' + resultado.hotel.nombre + ' (' + noches + ' noche' + (noches > 1 ? 's' : '') + ')</strong></div>';
+            }
+            html += '<div class="resumen-item total"><span>Total</span><span>' + Q(reservaEnProceso.desglose.total) + '</span></div>';
+            document.getElementById('form-resumen-contenido').innerHTML = html;
+
+            document.getElementById('form-reserva').reset();
+            document.getElementById('form-error').classList.add('oculto');
+
+            ocultarTodas();
+            vistaFormulario.classList.remove('oculto');
+            window.scrollTo(0, 0);
+        }
+
+        document.getElementById('detalle-btn-reservar').addEventListener('click', abrirFormulario);
+
+        document.getElementById('form-reserva').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var nombre = document.getElementById('form-nombre').value.trim();
+            var email = document.getElementById('form-email').value.trim();
+            var telefono = document.getElementById('form-telefono').value.trim();
+            var notas = document.getElementById('form-notas').value.trim();
+            var error = document.getElementById('form-error');
+
+            if (!nombre || nombre.length < 3) { error.textContent = 'Por favor escribe tu nombre completo.'; error.classList.remove('oculto'); return; }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { error.textContent = 'Por favor escribe un correo válido.'; error.classList.remove('oculto'); return; }
+            if (!telefono || telefono.length < 7) { error.textContent = 'Por favor escribe un teléfono válido.'; error.classList.remove('oculto'); return; }
+
+            var codigo = generarCodigo();
+            var reserva = {
+                codigo: codigo,
+                creadaEn: new Date().toISOString(),
+                estado: 'pendiente',
+                cliente: { nombre: nombre, email: email, telefono: telefono },
+                notas: notas,
+                destinoId: reservaEnProceso.destinoId, destinoNombre: reservaEnProceso.destinoNombre,
+                tourId: reservaEnProceso.tourId, tourNombre: reservaEnProceso.tourNombre,
+                lanchaId: reservaEnProceso.lanchaId, lanchaNombre: reservaEnProceso.lanchaNombre,
+                lancheroNombre: reservaEnProceso.lancheroNombre,
+                fecha: reservaEnProceso.fecha, adultos: reservaEnProceso.adultos, ninos: reservaEnProceso.ninos,
+                hotelId: reservaEnProceso.hotelId, hotelNombre: reservaEnProceso.hotelNombre, noches: reservaEnProceso.noches,
+                desglose: reservaEnProceso.desglose, temporada: reservaEnProceso.temporada
+            };
+            agregarReserva(reserva);
+            // Sumar puntos si hay sesión de cliente
+var sesion = leerSesion();
+if (sesion && sesion.rol === 'cliente') {
+    var puntosGanados = calcularPuntosGanados(reserva.desglose.total);
+    agregarPuntosAUsuario(sesion.id, puntosGanados);
+    reserva.puntosGanados = puntosGanados;
+    actualizarUIUsuario();
+}
+            mostrarConfirmacion(reserva);
+        });
+
+        function mostrarConfirmacion(reserva) {
+            document.getElementById('confirmacion-codigo').textContent = reserva.codigo;
+            var html = '';
+            html += '<div class="resumen-item"><span>Destino</span><strong>' + reserva.destinoNombre + '</strong></div>';
+            html += '<div class="resumen-item"><span>Fecha</span><strong>' + reserva.fecha + '</strong></div>';
+            html += '<div class="resumen-item"><span>Lancha</span><strong>' + reserva.lanchaNombre + ' — ' + reserva.lancheroNombre + '</strong></div>';
+            html += '<div class="resumen-item"><span>Personas</span><strong>' + reserva.adultos + ' adulto(s), ' + reserva.ninos + ' niño(s)</strong></div>';
+            if (reserva.hotelNombre) {
+                html += '<div class="resumen-item"><span>Hotel</span><strong>' + reserva.hotelNombre + ' (' + reserva.noches + ' noche' + (reserva.noches > 1 ? 's' : '') + ')</strong></div>';
+            }
+            html += '<div class="resumen-item total"><span>Total</span><span>' + Q(reserva.desglose.total) + '</span></div>';
+            document.getElementById('confirmacion-detalle').innerHTML = html;
+
+            ocultarTodas();
+            vistaConfirmacion.classList.remove('oculto');
+            window.scrollTo(0, 0);
+        }
+
+        function abrirMisReservas() {
+            var lista = leerReservas();
+            var cont = document.getElementById('mis-reservas-lista');
+            var vacio = document.getElementById('mis-reservas-vacio');
+            cont.innerHTML = '';
+
+            if (lista.length === 0) {
+                cont.classList.add('oculto');
+                vacio.classList.remove('oculto');
+            } else {
+                cont.classList.remove('oculto');
+                vacio.classList.add('oculto');
+                lista.forEach(function (r, i) {
+                    var card = document.createElement('div');
+                    card.className = 'reserva-card estado-' + r.estado;
+                    card.style.animationDelay = (i * 0.06) + 's';
+                    var estadoTexto = { pendiente: '⏳ Pendiente', confirmada: '✅ Confirmada', cancelada: '❌ Cancelada', completada: '🏁 Completada' }[r.estado] || r.estado;
+                    var acciones = '';
+                    if (r.estado === 'pendiente') {
+                        acciones = '<button class="cancelar" data-codigo="' + r.codigo + '">Cancelar reserva</button>';
+                    } else if (r.estado === 'cancelada') {
+                        acciones = '<button data-codigo="' + r.codigo + '" data-accion="eliminar">Eliminar del historial</button>';
+                    }
+                    card.innerHTML =
+                        '<div>' +
+                            '<div class="reserva-codigo">' + r.codigo + '</div>' +
+                            '<div class="reserva-nombre">' + r.destinoNombre + '</div>' +
+                            '<div class="reserva-fecha-lugar">📅 ' + r.fecha + ' · 👥 ' + r.adultos + ' adulto(s), ' + r.ninos + ' niño(s)</div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div class="reserva-total">' + Q(r.desglose.total) + '</div>' +
+                            '<div class="reserva-estado">' + estadoTexto + '</div>' +
+                        '</div>' +
+                        (acciones ? '<div class="reserva-acciones">' + acciones + '</div>' : '');
+                    cont.appendChild(card);
+                });
+                cont.querySelectorAll('button').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var codigo = btn.getAttribute('data-codigo');
+                        var accion = btn.getAttribute('data-accion');
+                        if (accion === 'eliminar') {
+                            if (confirm('¿Eliminar esta reserva del historial?')) { eliminarReserva(codigo); abrirMisReservas(); }
+                        } else {
+                            if (confirm('¿Seguro que quieres cancelar la reserva ' + codigo + '?')) { actualizarEstadoReserva(codigo, 'cancelada'); abrirMisReservas(); }
+                        }
+                    });
+                });
+            }
+            ocultarTodas();
+            vistaMisReservas.classList.remove('oculto');
+            window.scrollTo(0, 0);
+        }
+
+        document.getElementById('form-btn-volver').addEventListener('click', function () {
+            ocultarTodas();
+            vistaDetalle.classList.remove('oculto');
+            window.scrollTo(0, 0);
+        });
+        document.getElementById('btn-ver-mis-reservas').addEventListener('click', abrirMisReservas);
+        document.getElementById('btn-volver-inicio').addEventListener('click', function () { mostrarInicio(); });
+        document.getElementById('mis-reservas-volver').addEventListener('click', function () { mostrarInicio(); });
+        document.getElementById('link-mis-reservas').addEventListener('click', function (e) { e.preventDefault(); abrirMisReservas(); });
+    </script>
+<script src="datos.js"></script>
+<script src="auth.js"></script>
+<script src="auth-ui.js"></script>
+</body>
+</html>
