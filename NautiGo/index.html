@@ -447,6 +447,8 @@
 
     <!-- SCRIPTS -->
     <script src="datos.js"></script>
+    <script src="auth.js"></script>
+    <script src="auth-ui.js"></script>
     <script>
         /* NAVEGACIÓN */
         var vistaInicio      = document.getElementById('vista-inicio');
@@ -459,22 +461,17 @@
         var linkDestino      = document.getElementById('link-destino');
 
         function ocultarTodas() {
-            vistaInicio.classList.add('oculto');
-            vistaDestinos.classList.add('oculto');
-            vistaDetalle.classList.add('oculto');
-            vistaFormulario.classList.add('oculto');
-            vistaConfirmacion.classList.add('oculto');
-            vistaMisReservas.classList.add('oculto');
-        }
-
-        function mostrarInicio(e) {
-            if (e) e.preventDefault();
-            ocultarTodas();
-            vistaInicio.classList.remove('oculto');
-            linkInicio.classList.add('active');
-            linkDestino.classList.remove('active');
-            window.scrollTo(0, 0);
-        }
+    vistaInicio.classList.add('oculto');
+    vistaDestinos.classList.add('oculto');
+    vistaDetalle.classList.add('oculto');
+    vistaFormulario.classList.add('oculto');
+    vistaConfirmacion.classList.add('oculto');
+    vistaMisReservas.classList.add('oculto');
+    document.getElementById('vista-login').classList.add('oculto');
+    document.getElementById('vista-registro').classList.add('oculto');
+    document.getElementById('vista-panel-lanchero').classList.add('oculto');
+    document.getElementById('vista-panel-admin').classList.add('oculto');
+}
 
         function mostrarDestinos(e) {
             if (e) e.preventDefault();
@@ -989,8 +986,6 @@ if (sesion && sesion.rol === 'cliente') {
         document.getElementById('mis-reservas-volver').addEventListener('click', function () { mostrarInicio(); });
         document.getElementById('link-mis-reservas').addEventListener('click', function (e) { e.preventDefault(); abrirMisReservas(); });
     </script>
-<script src="datos.js"></script>
-<script src="auth.js"></script>
-<script src="auth-ui.js"></script>
+
 </body>
 </html>
