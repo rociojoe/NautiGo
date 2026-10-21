@@ -95,11 +95,11 @@
                         <div class="card-content"><h3>Siete Altares</h3><p>Ideal para la selva</p></div>
                     </article>
                     <article class="destino-card" id="card-rio-dulce">
-                        <div class="card-image"><span class="placeholder-text">Río Dulce</span></div>
+                        <div class="card-image"><img src="img/rio-dulce.jpg" alt="Río Dulce"></div>
                         <div class="card-content"><h3>Río Dulce</h3><p>Cañón de río y naturaleza</p></div>
                     </article>
                     <article class="destino-card" id="card-punta-palma">
-                        <div class="card-image"><span class="placeholder-text">Punta Palma</span></div>
+                        <div class="card-image"><img src="img/punta-palma.jpg" alt="Punta Palma"></div>
                         <div class="card-content"><h3>Punta Palma</h3><p>Un rincón remoto</p></div>
                     </article>
                 </div>
@@ -119,8 +119,12 @@
             <div class="container">
                 <div class="hero-content">
                     <h1 class="hero-title">Nuestros destinos</h1>
-                    <p class="hero-subtitle">Encuentra tu próximo lugar en el Caribe</p>
+                    <p class="hero-subtitle">Elige el servicio que buscas y baja a verlos.</p>
                 </div>
+            </div>
+            <div class="bajar-aviso" aria-hidden="true">
+                <span>Desliza hacia abajo</span>
+                <i class="bajar-flecha"></i>
             </div>
         </section>
         <div class="wave-separator wave-separator--dark-to-light">
@@ -129,21 +133,19 @@
             </svg>
         </div>
         <section class="destinos-area">
-            <div class="container destinos-layout">
-                <aside class="filtro-caja" id="filtro-caja">
-                    <button id="btn-filtrar" class="filtrar-toggle" type="button">Filtrar ▾</button>
-                    <div class="filtro-menu">
-                        <p class="filtro-menu-titulo">Filtrar por:</p>
-                        <div class="filtro-opciones">
-                            <button class="filtro-opcion active" type="button" data-filtro="todos">Todos</button>
-                            <button class="filtro-opcion" type="button" data-filtro="playa">Playas</button>
-                            <button class="filtro-opcion" type="button" data-filtro="rio">Ríos</button>
-                        </div>
+            <div class="container">
+                <div class="filtro-caja" id="filtro-caja">
+                    <div class="busca-caja">
+                        <input type="search" id="destinos-buscar" placeholder="Buscar destino o servicio" aria-label="Buscar destino">
                     </div>
-                </aside>
-                <div class="destinos-contenido">
-                    <div class="lugares-grid" id="lugares-grid"></div>
+                    <div class="filtro-menu">
+                        <p class="filtro-menu-titulo">Filtrar por (puedes combinar):</p>
+                        <div class="filtro-opciones" id="filtro-opciones"></div>
+                        <button type="button" id="filtro-limpiar" class="filtro-limpiar oculto">Limpiar filtros</button>
+                    </div>
                 </div>
+                <p class="destinos-total" id="destinos-total"></p>
+                <div class="lugares-grid" id="lugares-grid"></div>
             </div>
         </section>
     </main>
@@ -151,7 +153,7 @@
     <!-- VISTA 3: DETALLE -->
     <main id="vista-detalle" class="oculto">
         <section class="detalle-hero">
-            <img id="detalle-imagen" src="" alt="">
+            <img id="detalle-imagen" alt="">
             <div class="detalle-overlay">
                 <span id="detalle-tipo" class="lugar-tipo"></span>
                 <h1 id="detalle-nombre"></h1>
@@ -164,9 +166,10 @@
                     <button id="btn-volver" class="btn-volver">← Volver</button>
                     <h2 class="detalle-subtitulo">Sobre este destino</h2>
                     <p id="detalle-descripcion" class="detalle-texto"></p>
+                    <div id="detalle-cats" class="lugar-cats"></div>
                     <div class="detalle-cols">
-                        <div class="detalle-col"><h3>✅ Incluye</h3><ul id="detalle-incluye"></ul></div>
-                        <div class="detalle-col"><h3>❌ No incluye</h3><ul id="detalle-no-incluye"></ul></div>
+                        <div class="detalle-col"><h3>Incluye</h3><ul id="detalle-incluye"></ul></div>
+                        <div class="detalle-col"><h3>No incluye</h3><ul id="detalle-no-incluye"></ul></div>
                     </div>
                     <h2 class="detalle-subtitulo">Hoteles cercanos</h2>
                     <div id="detalle-hoteles" class="detalle-hoteles"></div>
@@ -185,6 +188,10 @@
                         <label class="campo"><span>Noches</span><input type="number" id="detalle-noches" min="1" max="30" value="1"></label>
                     </div>
                     <div class="detalle-desglose" id="detalle-desglose"></div>
+                    <p id="detalle-sin-tour" class="detalle-sin-tour oculto">
+                        Este destino todavía no tiene precio de tour cargado.
+                        Escríbenos y te confirmamos el costo de la lancha.
+                    </p>
                     <button class="btn-cta detalle-btn-reservar" id="detalle-btn-reservar">Reservar ahora</button>
                     <p id="detalle-temporada-info" class="detalle-temporada-info"></p>
                 </aside>
@@ -254,6 +261,7 @@
 <!-- VISTA: LOGIN -->
 <main id="vista-login" class="oculto">
     <section class="auth-area">
+        <div class="mar-hero"></div>
         <div class="container auth-layout">
             <div class="auth-card">
                 <h1 class="auth-titulo">Iniciar sesión</h1>
@@ -285,14 +293,15 @@
 <!-- VISTA: REGISTRO -->
 <main id="vista-registro" class="oculto">
     <section class="auth-area">
+        <div class="mar-hero"></div>
         <div class="container auth-layout">
             <div class="auth-card auth-card-wide">
                 <h1 class="auth-titulo">Crear cuenta</h1>
                 <p class="auth-sub">Únete a NautiGo como cliente o lanchero</p>
 
                 <div class="reg-tabs">
-                    <button type="button" class="reg-tab active" data-rol="cliente">👤 Cliente</button>
-                    <button type="button" class="reg-tab" data-rol="lanchero">🚤 Lanchero</button>
+                    <button type="button" class="reg-tab active" data-rol="cliente">Cliente</button>
+                    <button type="button" class="reg-tab" data-rol="lanchero">Lanchero</button>
                 </div>
 
                 <input type="hidden" id="reg-rol" value="cliente">
@@ -333,9 +342,15 @@
                                 <input type="number" id="reg-lancha-motor" value="40" min="5" max="300">
                             </div>
                         </div>
-                        <div class="campo">
-                            <label for="reg-lancha-gasolina">Costo gasolina por hora (Q)</label>
-                            <input type="number" id="reg-lancha-gasolina" value="80" min="10" step="5">
+                        <div class="campo-doble">
+                            <div class="campo">
+                                <label for="reg-lancha-galones">Galones de tanque</label>
+                                <input type="number" id="reg-lancha-galones" value="40" min="1" max="500">
+                            </div>
+                            <div class="campo">
+                                <label for="reg-lancha-gasolina">Costo gasolina por hora (Q)</label>
+                                <input type="number" id="reg-lancha-gasolina" value="80" min="10" step="5">
+                            </div>
                         </div>
                     </div>
 
@@ -354,6 +369,7 @@
 <!-- VISTA: PANEL LANCHEO -->
 <main id="vista-panel-lanchero" class="oculto">
     <section class="panel-area">
+        <div class="mar-hero"></div>
         <div class="container">
             <button class="btn-volver" onclick="mostrarInicio()">← Volver al inicio</button>
             <h1 class="panel-titulo">Panel del Lanchero</h1>
@@ -371,6 +387,7 @@
                     <h3>Mi lancha</h3>
                     <p><strong>Nombre:</strong> <span id="pl-lancha-nombre"></span></p>
                     <p><strong>Capacidad:</strong> <span id="pl-lancha-capacidad"></span></p>
+                    <p><strong>Tanque:</strong> <span id="pl-lancha-galones"></span></p>
                     <p><strong>Motor:</strong> <span id="pl-lancha-motor"></span></p>
                     <p><strong>Gasolina:</strong> <span id="pl-lancha-gasolina"></span></p>
                     <p><strong>Activa:</strong> <span id="pl-lancha-activa"></span></p>
@@ -386,15 +403,16 @@
 <!-- VISTA: PANEL ADMIN -->
 <main id="vista-panel-admin" class="oculto">
     <section class="panel-area">
+        <div class="mar-hero"></div>
         <div class="container">
             <button class="btn-volver" onclick="mostrarInicio()">← Volver al inicio</button>
             <h1 class="panel-titulo">Panel de Administración</h1>
             <p class="panel-sub">Gestiona lancheros, hoteles y reservas</p>
 
-            <h2 class="panel-seccion">🚤 Lancheros</h2>
+            <h2 class="panel-seccion">Lancheros</h2>
             <div id="admin-lancheros" class="panel-lista"></div>
 
-            <h2 class="panel-seccion">🏨 Hoteles</h2>
+            <h2 class="panel-seccion">Hoteles</h2>
             <form id="form-hotel-admin" class="admin-form-hotel">
                 <div class="campo-doble">
                     <div class="campo">
@@ -432,7 +450,7 @@
             </form>
             <div id="admin-hoteles" class="panel-lista"></div>
 
-            <h2 class="panel-seccion">📋 Todas las reservas</h2>
+            <h2 class="panel-seccion">Todas las reservas</h2>
             <div id="admin-reservas" class="panel-lista"></div>
         </div>
     </section>
@@ -473,6 +491,15 @@
     document.getElementById('vista-panel-admin').classList.add('oculto');
 }
 
+        function mostrarInicio(e) {
+            if (e) e.preventDefault();
+            ocultarTodas();
+            vistaInicio.classList.remove('oculto');
+            linkInicio.classList.add('active');
+            linkDestino.classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+
         function mostrarDestinos(e) {
             if (e) e.preventDefault();
             ocultarTodas();
@@ -487,64 +514,137 @@
 
         /* LUGARES */
         var lugaresGrid = document.getElementById('lugares-grid');
-        var filtroActual = 'todos';
-        var observerLugares = null;
+        var filtrosActivos = [];
+        var busqueda = '';
         var detalleActualId = null;
         var reservaEnProceso = null;
 
-        function observarTarjetas() {
-            var cards = document.querySelectorAll('.lugar-card:not(.visible)');
-            if (!('IntersectionObserver' in window)) {
-                cards.forEach(function (c) { c.classList.add('visible'); });
-                return;
-            }
-            if (!observerLugares) {
-                observerLugares = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                            observerLugares.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.15 });
-            }
-            cards.forEach(function (c) { observerLugares.observe(c); });
+        function normalizar(txt) {
+            return String(txt || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        }
+
+        function destinoTieneTour(destinoId) {
+            return !!tourDeDestino(destinoId);
+        }
+
+        function destinosFiltrados() {
+            var q = normalizar(busqueda).trim();
+            return destinos.filter(function (d) {
+                var cats = d.categorias || [];
+                for (var i = 0; i < filtrosActivos.length; i++) {
+                    if (cats.indexOf(filtrosActivos[i]) < 0) return false;
+                }
+                if (!q) return true;
+                var texto = normalizar([
+                    d.nombre, d.ubicacion, d.descripcionCorta,
+                    (d.categorias || []).map(function (c) { return CATEGORIAS[c] || c; }).join(' ')
+                ].join(' '));
+                return texto.indexOf(q) >= 0;
+            });
         }
 
         function renderizarLugares() {
             lugaresGrid.innerHTML = '';
-            var filtrados = destinos.filter(function (l) {
-                return filtroActual === 'todos' || l.tipo === filtroActual;
-            });
+            var filtrados = destinosFiltrados();
+
+            var total = document.getElementById('destinos-total');
+            var etiqueta = filtrados.length === 1 ? ' lugar' : ' lugares';
+            total.innerHTML = '<strong>' + filtrados.length + etiqueta + '</strong>' +
+                (filtrosActivos.length
+                    ? ' · ' + filtrosActivos.map(function (c) { return esc(CATEGORIAS[c]); }).join(' + ')
+                    : '');
+
+            if (!filtrados.length) {
+                lugaresGrid.innerHTML =
+                    '<p class="lugares-vacio">Ningún destino coincide con esa combinación.' +
+                    ' Prueba con un solo servicio o cambia la búsqueda.</p>';
+                actualizarLimpiar();
+                return;
+            }
+
             filtrados.forEach(function (lugar, i) {
                 var card = document.createElement('article');
-                card.className = 'lugar-card';
-                card.style.animationDelay = (i * 0.08) + 's';
+                card.className = 'destino-card';
+                card.style.animationDelay = Math.min(i, 11) * 0.05 + 's';
                 card.setAttribute('data-id', lugar.id);
-                var etiqueta = lugar.tipo.charAt(0).toUpperCase() + lugar.tipo.slice(1);
+
+                var foto = lugar.imagen
+                    ? '<img src="' + lugar.imagen + '" alt="' + esc(lugar.nombre) + '" loading="lazy">'
+                    : '<span>' + esc(lugar.nombre) + '</span>';
+
+                var cats = (lugar.categorias || []).slice();
+                cats.sort(function (a, b) {
+                    return (filtrosActivos.indexOf(b) >= 0 ? 1 : 0) -
+                           (filtrosActivos.indexOf(a) >= 0 ? 1 : 0);
+                });
+                var visibles = cats.slice(0, 3);
+                var ocultas = cats.length - visibles.length;
+                var chips = visibles.map(function (c) {
+                    var activo = filtrosActivos.indexOf(c) >= 0;
+                    return '<span class="cat-chip' + (activo ? ' activo' : '') + '">' +
+                           esc(CATEGORIAS[c] || c) + '</span>';
+                }).join('') + (ocultas > 0 ? '<span class="cat-chip cat-chip-mas">+' + ocultas + '</span>' : '');
+
                 card.innerHTML =
-                    '<div class="lugar-imagen">' + lugar.nombre + '</div>' +
-                    '<div class="lugar-info">' +
-                        '<span class="lugar-tipo">' + etiqueta + '</span>' +
-                        '<h3>' + lugar.nombre + '</h3>' +
-                        '<p>' + lugar.descripcionCorta + '</p>' +
+                    '<div class="card-image' + (lugar.imagen ? '' : ' sin-foto') + '">' + foto + '</div>' +
+                    '<div class="card-content">' +
+                        '<div class="lugar-cab">' +
+                            '<span class="lugar-tipo">' + esc(CATEGORIAS[lugar.tipo] || lugar.tipo) + '</span>' +
+                            (destinoTieneTour(lugar.id) ? '' : '<span class="lugar-aviso">Precio por confirmar</span>') +
+                        '</div>' +
+                        '<h3>' + esc(lugar.nombre) + '</h3>' +
+                        '<p>' + esc(lugar.descripcionCorta) + '</p>' +
+                        '<div class="lugar-cats">' + chips + '</div>' +
                     '</div>';
                 card.addEventListener('click', function () { abrirDetalle(lugar.id); });
                 lugaresGrid.appendChild(card);
             });
-            observarTarjetas();
+            actualizarLimpiar();
         }
 
-        var opciones = document.querySelectorAll('.filtro-opcion');
-        opciones.forEach(function (opcion) {
-            opcion.addEventListener('click', function () {
-                opciones.forEach(function (o) { o.classList.remove('active'); });
-                opcion.classList.add('active');
-                filtroActual = opcion.getAttribute('data-filtro');
-                renderizarLugares();
+        function actualizarLimpiar() {
+            var hay = filtrosActivos.length > 0 || busqueda.trim() !== '';
+            document.getElementById('filtro-limpiar').classList.toggle('oculto', !hay);
+        }
+
+        function construirFiltros() {
+            var caja = document.getElementById('filtro-opciones');
+            caja.innerHTML = '';
+            var cuentas = {};
+            destinos.forEach(function (d) {
+                (d.categorias || []).forEach(function (c) { cuentas[c] = (cuentas[c] || 0) + 1; });
             });
+            Object.keys(CATEGORIAS).forEach(function (cat) {
+                if (!cuentas[cat]) return;
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'filtro-opcion';
+                b.setAttribute('data-cat', cat);
+                b.innerHTML = esc(CATEGORIAS[cat]) + '<span class="filtro-cuenta">' + cuentas[cat] + '</span>';
+                b.addEventListener('click', function () {
+                    var i = filtrosActivos.indexOf(cat);
+                    if (i >= 0) filtrosActivos.splice(i, 1); else filtrosActivos.push(cat);
+                    b.classList.toggle('active', i < 0);
+                    renderizarLugares();
+                });
+                caja.appendChild(b);
+            });
+        }
+
+        document.getElementById('destinos-buscar').addEventListener('input', function () {
+            busqueda = this.value;
+            renderizarLugares();
         });
 
+        document.getElementById('filtro-limpiar').addEventListener('click', function () {
+            filtrosActivos = [];
+            busqueda = '';
+            document.getElementById('destinos-buscar').value = '';
+            document.querySelectorAll('.filtro-opcion.active').forEach(function (o) { o.classList.remove('active'); });
+            renderizarLugares();
+        });
+
+        construirFiltros();
         renderizarLugares();
 
         /* PARALLAX */
@@ -638,15 +738,26 @@
             var destino = destinos.find(function (d) { return d.id === destinoId; });
             if (!destino) return;
             var tour = tourDeDestino(destinoId);
-            if (!tour) return;
             detalleActualId = destinoId;
 
-            document.getElementById('detalle-imagen').src = destino.imagen;
-            document.getElementById('detalle-imagen').alt = destino.nombre;
+            var foto = document.getElementById('detalle-imagen');
+            if (destino.imagen) {
+                foto.src = destino.imagen;
+                foto.alt = destino.nombre;
+                foto.classList.remove('oculto');
+            } else {
+                foto.removeAttribute('src');
+                foto.classList.add('oculto');
+            }
             document.getElementById('detalle-nombre').textContent = destino.nombre;
-            document.getElementById('detalle-tipo').textContent = destino.tipo;
-            document.getElementById('detalle-ubicacion').textContent = '📍 ' + destino.ubicacion;
+            document.getElementById('detalle-tipo').textContent = CATEGORIAS[destino.tipo] || destino.tipo;
+            document.getElementById('detalle-ubicacion').textContent = destino.ubicacion;
             document.getElementById('detalle-descripcion').textContent = destino.descripcionLarga;
+
+            var contCats = document.getElementById('detalle-cats');
+            contCats.innerHTML = (destino.categorias || []).map(function (c) {
+                return '<span class="cat-chip">' + esc(CATEGORIAS[c] || c) + '</span>';
+            }).join('');
 
             var ulIncluye = document.getElementById('detalle-incluye');
             var ulNo = document.getElementById('detalle-no-incluye');
@@ -671,7 +782,7 @@
 
             document.getElementById('detalle-fecha').value = hoyISO();
             document.getElementById('detalle-fecha').min = hoyISO();
-            document.getElementById('detalle-adultos').value = Math.max(tour.minPersonas || 1, 2);
+            document.getElementById('detalle-adultos').value = tour ? Math.max(tour.minPersonas || 1, 2) : 2;
             document.getElementById('detalle-ninos').value = 0;
 
             var selectLancha = document.getElementById('detalle-lancha');
@@ -697,6 +808,10 @@
             document.getElementById('detalle-hotel-selector').classList.add('oculto');
             document.getElementById('detalle-noches').value = 1;
 
+            var panel = document.querySelector('.detalle-panel');
+            panel.classList.toggle('sin-tour', !tour);
+            document.getElementById('detalle-sin-tour').classList.toggle('oculto', !!tour);
+
             actualizarDesglose();
 
             ocultarTodas();
@@ -707,6 +822,7 @@
         function actualizarDesglose() {
             if (!detalleActualId) return;
             var tour = tourDeDestino(detalleActualId);
+            if (!tour) return;
             var fecha = document.getElementById('detalle-fecha').value || hoyISO();
             var adultos = parseInt(document.getElementById('detalle-adultos').value, 10) || 1;
             var ninos = parseInt(document.getElementById('detalle-ninos').value, 10) || 0;
@@ -732,10 +848,10 @@
                 html += '<div class="desglose-linea"><span>Lancha completa</span><span>' + Q(tour.precioLancha) + '</span></div>';
             }
 
-            html += '<div class="desglose-linea"><span>⛽ Gasolina</span><span>' + Q(d.gasolina) + '</span></div>';
+            html += '<div class="desglose-linea"><span>Gasolina</span><span>' + Q(d.gasolina) + '</span></div>';
 
             if (d.costoHotel > 0) {
-                html += '<div class="desglose-linea"><span>🏨 Hotel (' + noches + ' noche' + (noches > 1 ? 's' : '') + ')</span><span>' + Q(d.costoHotel) + '</span></div>';
+                html += '<div class="desglose-linea"><span>Hotel (' + noches + ' noche' + (noches > 1 ? 's' : '') + ')</span><span>' + Q(d.costoHotel) + '</span></div>';
             }
             if (d.multiplicador !== 1) {
                 html += '<div class="desglose-linea"><span>Temporada (' + resultado.temporada.nombre + ' ×' + d.multiplicador + ')</span><span>' + Q(d.total - d.subtotal) + '</span></div>';
@@ -895,13 +1011,12 @@
             };
             agregarReserva(reserva);
             // Sumar puntos si hay sesión de cliente
-var sesion = leerSesion();
-if (sesion && sesion.rol === 'cliente') {
-    var puntosGanados = calcularPuntosGanados(reserva.desglose.total);
-    agregarPuntosAUsuario(sesion.id, puntosGanados);
-    reserva.puntosGanados = puntosGanados;
-    actualizarUIUsuario();
-}
+            var sesion = leerSesion();
+            if (sesion && sesion.rol === 'cliente') {
+                var puntosGanados = calcularPuntosGanados(reserva.desglose.total);
+                agregarPuntos(puntosGanados);
+                reserva.puntosGanados = puntosGanados;
+            }
             mostrarConfirmacion(reserva);
         });
 

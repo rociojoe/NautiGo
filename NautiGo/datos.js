@@ -38,10 +38,34 @@ function obtenerTemporada(fecha) {
     return temporadas.find(function (t) { return t.id === "media"; });
 }
 
-/* 2. DESTINOS */
+/* 2. CATEGORÍAS DE DESTINO */
+/* Etiqueta visible de cada categoría. El orden de las claves es el orden
+   de los chips del filtro. */
+var CATEGORIAS = {
+    playa:       'Playa',
+    rio:         'Río',
+    hotel:       'Hotel',
+    restaurante: 'Restaurante',
+    piscina:     'Piscina',
+    pozas:       'Pozas',
+    bungalows:   'Bungalows',
+    termales:    'Aguas termales',
+    kayak:       'Kayak',
+    tirolesa:    'Tirolesa',
+    caballo:     'Paseos a caballo',
+    toboganes:   'Toboganes',
+    lancha:      'Paseos en lancha',
+    snacks:      'Snacks y bebidas'
+};
+
+/* 3. DESTINOS
+   `categorias` manda en el filtro; `tipo` es solo la etiqueta del detalle.
+   Los que no tienen tour en la lista de abajo se pueden ver pero no reservar
+   todavía: el detalle muestra "precio por confirmar". */
 var destinos = [
     {
         id: "playa-blanca", nombre: "Playa Blanca", tipo: "playa",
+        categorias: ["playa", "snacks"],
         descripcionCorta: "Arena blanca y aguas tranquilas en Livingston.",
         descripcionLarga: "Playa Blanca es una de las playas más famosas de Livingston, con arena blanca y aguas cristalinas del Caribe. Ideal para nadar, tomar el sol y desconectarse. Se llega en lancha desde el muelle de Livingston (15 min).",
         ubicacion: "Livingston, Izabal", imagen: "img/playa.jpg",
@@ -49,7 +73,17 @@ var destinos = [
         noIncluye: ["Comida", "Bebidas", "Protector solar"]
     },
     {
+        id: "punta-cocoli", nombre: "Punta de Cocolí", tipo: "playa",
+        categorias: ["playa"],
+        descripcionCorta: "Playa serena de la costa de Livingston.",
+        descripcionLarga: "Punta de Cocolí es una playa de la costa de Livingston, de acceso en lancha y ambiente tranquilo. Buena opción para un día de sol y mar sin multitudes.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
         id: "siete-altares", nombre: "Siete Altares", tipo: "rio",
+        categorias: ["rio", "pozas"],
         descripcionCorta: "Cascadas escalonadas de agua dulce.",
         descripcionLarga: "Siete Altares es un conjunto de cascadas y pozas naturales de agua dulce, rodeadas de selva. Se llega caminando desde Playa Blanca o en lancha por el río. Perfecto para refrescarse y tomar fotos.",
         ubicacion: "Livingston, Izabal", imagen: "img/siete-altares.jpg",
@@ -57,32 +91,226 @@ var destinos = [
         noIncluye: ["Comida", "Calzado adecuado (traer)"]
     },
     {
-        id: "rio-dulce", nombre: "Río Dulce", tipo: "rio",
-        descripcionCorta: "Cañón espectacular y manglares.",
-        descripcionLarga: "El cañón del Río Dulce es uno de los paisajes más impresionantes de Guatemala: paredes de selva, manglares, aves y un castillo colonial (Castillo de San Felipe). El tour en lancha dura varias horas y es una experiencia imperdible.",
-        ubicacion: "Río Dulce, Izabal", imagen: "img/destino-rio-dulce.jpg",
-        incluye: ["Lancha", "Guía bilingüe", "Entrada al Castillo de San Felipe"],
-        noIncluye: ["Comida", "Bebidas"]
+        id: "bahia-azul", nombre: "Bahía Azul", tipo: "playa",
+        categorias: ["playa", "restaurante"],
+        descripcionCorta: "Playa con restaurante frente al mar.",
+        descripcionLarga: "Bahía Azul reúne playa y restaurante en el mismo lugar: se llega en lancha desde Livingston, se come ahí mismo y se regresa tranquilo.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
+    },
+    {
+        id: "salvador-gaviota", nombre: "Salvador Gaviota", tipo: "playa",
+        categorias: ["playa", "restaurante", "hotel"],
+        descripcionCorta: "Playa, restaurante y hospedaje en un solo lugar.",
+        descripcionLarga: "Salvador Gaviota es un destino de playa con restaurante y habitaciones, pensado para quedarse más de un día. Se llega en lancha desde Livingston.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "playa-quehueche", nombre: "Playa Quehueche", tipo: "playa",
+        categorias: ["playa", "restaurante", "hotel"],
+        descripcionCorta: "Playa con hotel y restaurante a pie de mar.",
+        descripcionLarga: "Playa Quehueche combina la playa con servicio de restaurante y hospedaje, así que funciona tanto para un día de visita como para quedarse a dormir.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "vuelve-mujer", nombre: "Vuelve Mujer", tipo: "rio",
+        categorias: ["rio", "pozas"],
+        descripcionCorta: "Río de pozas naturales y sombra.",
+        descripcionLarga: "Vuelve Mujer es un tramo de río con pozas de agua dulce rodeadas de vegetación. Parada frecuente en lancha para refrescarse a mitad del recorrido.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "flamingo", nombre: "Flamingo", tipo: "restaurante",
+        categorias: ["restaurante", "piscina"],
+        descripcionCorta: "Restaurante y piscina para el día de salida.",
+        descripcionLarga: "Flamingo es un punto de restaurante con piscina, pensado para la visita de un día: se llega en lancha, se come y se disfruta del agua.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el restaurante", "Entrada a la piscina", "Guía (opcional)"]
+    },
+    {
+        id: "livingston-resort", nombre: "Livingston Resort", tipo: "hotel",
+        categorias: ["hotel", "restaurante"],
+        descripcionCorta: "Hotel con restaurante en la zona de Livingston.",
+        descripcionLarga: "Livingston Resort es la opción de hospedaje con restaurante incluido en el servicio, para armar un paquete de más de un día en la costa.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "playa-barique", nombre: "Playa Barique", tipo: "playa",
+        categorias: ["playa"],
+        descripcionCorta: "Playa tranquila de la costa caribeña.",
+        descripcionLarga: "Playa Barique es una playa de la costa de Izabal a la que se llega en lancha. Ambiente tranquilo, ideal para quien busca mar sin tanta concurrencia.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "playa-capitania", nombre: "Playa Capitanía", tipo: "playa",
+        categorias: ["playa"],
+        descripcionCorta: "Playa de acceso en lancha, poco concurrida.",
+        descripcionLarga: "Playa Capitanía es una playa a la que se llega por lancha y se mantiene poco concurrida. Buena parada intermedia en un recorrido por la costa.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "bia-caribe", nombre: "Bia Caribe", tipo: "hotel",
+        categorias: ["hotel", "playa"],
+        descripcionCorta: "Hotel con playa para quedarse más de un día.",
+        descripcionLarga: "Bia Caribe combina hospedaje y playa en el mismo destino, pensado para paquetes de noche con traslado en lancha.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "buga-mama", nombre: "Buga Mama", tipo: "restaurante",
+        categorias: ["restaurante"],
+        descripcionCorta: "Restaurante para comer entre viaje y viaje.",
+        descripcionLarga: "Buga Mama es un punto de restaurante que funciona como parada de comida dentro de un recorrido en lancha por la costa.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
+    },
+    {
+        id: "hotel-caribe", nombre: "Hotel Caribe", tipo: "hotel",
+        categorias: ["hotel"],
+        descripcionCorta: "Hospedaje en la zona del Caribe.",
+        descripcionLarga: "Hotel Caribe es la opción de hospedaje del destino, para armar un paquete de una o más noches con traslado en lancha.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "casa-nostra", nombre: "Casa Nostra", tipo: "hotel",
+        categorias: ["hotel", "restaurante"],
+        descripcionCorta: "Hotel con restaurante.",
+        descripcionLarga: "Casa Nostra es un destino de hospedaje con restaurante, cómodo para quien quiere quedarse a dormir sin salir del lugar.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "casa-rosada", nombre: "Casa Rosada", tipo: "hotel",
+        categorias: ["hotel", "restaurante"],
+        descripcionCorta: "Hotel con restaurante.",
+        descripcionLarga: "Casa Rosada combina habitaciones y servicio de restaurante en el mismo destino, para visitas de más de un día.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "posada-el-delfin", nombre: "Posada El Delfín", tipo: "hotel",
+        categorias: ["hotel", "restaurante"],
+        descripcionCorta: "Posada con restaurante.",
+        descripcionLarga: "Posada El Delfín es un hospedaje con restaurante, de ambiente más pequeño y tranquilo, para quedarse la noche tras el recorrido en lancha.",
+        ubicacion: "Livingston, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
     {
         id: "punta-palma", nombre: "Punta Palma", tipo: "playa",
+        categorias: ["playa"],
         descripcionCorta: "Un rincón remoto y virgen del Caribe.",
         descripcionLarga: "Punta Palma es una playa poco visitada, de arena blanca y aguas transparentes. Ideal para quien busca tranquilidad y naturaleza sin multitudes. Se llega en lancha desde Livingston.",
-        ubicacion: "Livingston, Izabal", imagen: "img/destino-punta-palma.jpg",
+        ubicacion: "Livingston, Izabal", imagen: "img/punta-palma.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Comida", "Bebidas", "Guía (opcional)"]
     },
     {
         id: "isla-pajaros", nombre: "Isla de Pájaros", tipo: "playa",
+        categorias: ["playa", "lancha"],
         descripcionCorta: "Isla santuario de aves frente a Livingston.",
         descripcionLarga: "La Isla de Pájaros es un santuario natural donde anidan cientos de aves. El tour incluye un recorrido alrededor de la isla para observar aves y luego una parada en una playa cercana.",
-        ubicacion: "Livingston, Izabal", imagen: "img/destino-playa.jpg",
+        ubicacion: "Livingston, Izabal", imagen: null,
         incluye: ["Lancha", "Guía", "Chaleco salvavidas"],
+        noIncluye: ["Comida", "Bebidas"]
+    },
+
+    /* --- Zona de ríos --- */
+    {
+        id: "happy-fish", nombre: "Happy Fish", tipo: "rio",
+        categorias: ["rio", "restaurante"],
+        descripcionCorta: "Restaurante a la orilla del río.",
+        descripcionLarga: "Happy Fish es un destino de río con restaurante, para combinar el paseo en lancha con la comida del día.",
+        ubicacion: "Río Dulce, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
+    },
+    {
+        id: "casa-maya", nombre: "Casa Maya", tipo: "rio",
+        categorias: ["rio", "restaurante", "bungalows"],
+        descripcionCorta: "Restaurante y bungalows junto al río.",
+        descripcionLarga: "Casa Maya reúne río, restaurante y bungalows, así que sirve tanto para el día como para quedarse a dormir en la orilla.",
+        ubicacion: "Río Dulce, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "el-viajero", nombre: "El Viajero", tipo: "rio",
+        categorias: ["rio", "hotel", "restaurante", "piscina", "toboganes", "bungalows"],
+        descripcionCorta: "Hotel, restaurante, piscina y toboganes al río.",
+        descripcionLarga: "El Viajero es el destino más completo de la zona de ríos: hospedaje, restaurante, piscina y toboganes que bajan al río, con opción de bungalows. Funciona para paquetes de varios días.",
+        ubicacion: "Río Dulce, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "finca-tatin", nombre: "Finca Tatin", tipo: "rio",
+        categorias: ["rio", "restaurante", "bungalows", "kayak"],
+        descripcionCorta: "Río, restaurante, bungalows y kayak.",
+        descripcionLarga: "Finca Tatin es un destino de río con restaurante, bungalows y recorrido en kayak. Uno de los puntos más pedidos para combinar naturaleza y hospedaje.",
+        ubicacion: "Río Dulce, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Renta de kayak", "Guía (opcional)"]
+    },
+    {
+        id: "agua-termales", nombre: "Agua Termales", tipo: "rio",
+        categorias: ["rio", "restaurante", "termales"],
+        descripcionCorta: "Restaurante y aguas termales.",
+        descripcionLarga: "Agua Termales es el destino de aguas termales de la ruta, con restaurante en el lugar. Parada pensada para relajarse a mitad del recorrido.",
+        ubicacion: "Río Dulce, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
+    },
+    {
+        id: "canon-del-rio", nombre: "Cañón del Río", tipo: "rio",
+        categorias: ["rio", "restaurante"],
+        descripcionCorta: "Restaurante con vista al cañón del Río Dulce.",
+        descripcionLarga: "Cañón del Río es el punto de restaurante sobre el cañón, para comer viendo las paredes de selva y el paso de las lanchas.",
+        ubicacion: "Río Dulce, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
+    },
+    {
+        id: "ak-tenamit", nombre: "Ak' Tenamit", tipo: "rio",
+        categorias: ["rio", "restaurante", "tirolesa", "caballo", "kayak", "lancha"],
+        descripcionCorta: "Aventura en el río: tirolesa, caballo, kayak y lancha.",
+        descripcionLarga: "Ak' Tenamit es el destino de aventura de la ruta: restaurante junto al río más tirolesa, paseos a caballo, kayak y recorridos en lancha. El más completo para un día activo.",
+        ubicacion: "Río Dulce, Izabal", imagen: null,
+        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
+        noIncluye: ["Consumo en el destino", "Actividades de aventura", "Guía (opcional)"]
+    },
+    {
+        id: "rio-dulce", nombre: "Río Dulce", tipo: "rio",
+        categorias: ["rio", "lancha"],
+        descripcionCorta: "Cañón espectacular y manglares.",
+        descripcionLarga: "El cañón del Río Dulce es uno de los paisajes más impresionantes de Guatemala: paredes de selva, manglares, aves y un castillo colonial (Castillo de San Felipe). El tour en lancha dura varias horas y es una experiencia imperdible.",
+        ubicacion: "Río Dulce, Izabal", imagen: "img/rio-dulce.jpg",
+        incluye: ["Lancha", "Guía bilingüe", "Entrada al Castillo de San Felipe"],
         noIncluye: ["Comida", "Bebidas"]
     }
 ];
 
-/* 3. TOURS */
+/* 4. TOURS */
 var tours = [
     { id: "tour-playa-blanca", destinoId: "playa-blanca", nombre: "Playa Blanca ida y vuelta", tipoPrecio: "persona", precioAdulto: 150, precioNino: 75, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
     { id: "tour-siete-altares", destinoId: "siete-altares", nombre: "Siete Altares + Playa Blanca", tipoPrecio: "persona", precioAdulto: 200, precioNino: 100, duracionMinutos: 180, minPersonas: 1, maxPersonas: 12 },
@@ -91,7 +319,7 @@ var tours = [
     { id: "tour-isla-pajaros", destinoId: "isla-pajaros", nombre: "Isla de Pájaros (lancha completa)", tipoPrecio: "lancha", precioLancha: 1200, duracionMinutos: 90, minPersonas: 1, maxPersonas: 12 }
 ];
 
-/* 4. LANCHEROS Y LANCHAS */
+/* 5. LANCHEROS Y LANCHAS */
 var lancheros = [
     { id: "lan-001", nombre: "Juan Pérez", telefono: "5555-1001", aprobado: true },
     { id: "lan-002", nombre: "María López", telefono: "5555-1002", aprobado: true },
@@ -104,21 +332,21 @@ var lanchas = [
     { id: "lancha-caribe", lancheroId: "lan-003", nombre: "Caribe I", capacidad: 12, motorHP: 60, costoGasolinaHora: 110, horarioInicio: "07:00", horarioFin: "17:00", activa: true }
 ];
 
-/* 5. HOTELES */
+/* 6. HOTELES */
 var hoteles = [
     { id: "hotel-palmeras", nombre: "Hotel Las Palmeras", categoria: "economico", precioNoche: 300, estrellas: 2, ubicacion: "Livingston centro", imagen: "img/hotel-palmeras.jpg", descripcion: "Hotel sencillo, limpio y céntrico." },
     { id: "hotel-rio-dulce-lodge", nombre: "Río Dulce Lodge", categoria: "medio", precioNoche: 800, estrellas: 4, ubicacion: "Río Dulce", imagen: "img/hotel-rio-dulce.jpg", descripcion: "Cabañas frente al río, con desayuno incluido." },
     { id: "hotel-boutique-izabal", nombre: "Izabal Boutique", categoria: "boutique", precioNoche: 1500, estrellas: 5, ubicacion: "Livingston, frente al mar", imagen: "img/hotel-boutique.jpg", descripcion: "Hotel boutique con vista al Caribe." }
 ];
 
-/* 6. PAQUETES */
+/* 7. PAQUETES */
 var paquetes = [
     { id: "paq-rio-dulce-2d", nombre: "Río Dulce + Siete Altares (2 días)", descripcionCorta: "2 días, 1 noche. Lancha, hotel medio y guía.", descripcionLarga: "Recorre el cañón del Río Dulce y las cascadas de Siete Altares. Incluye hotel medio con desayuno.", duracionDias: 2, precioPorPersona: 2500, minPersonas: 2, maxPersonas: 12, imagen: "img/paquete-rio-dulce.jpg", destacado: true, badge: "⭐ Más vendido", destinosIds: ["rio-dulce", "siete-altares"], hotelId: "hotel-rio-dulce-lodge", incluye: ["Lancha", "Guía bilingüe", "1 noche hotel", "Desayuno", "Entradas"], noIncluye: ["Almuerzos", "Cenas", "Bebidas"] },
     { id: "paq-playa-familiar", nombre: "Playa Blanca Familiar (1 día)", descripcionCorta: "1 día. Ideal para familias con niños.", descripcionLarga: "Día completo en Playa Blanca con lancha privada y guía.", duracionDias: 1, precioPorPersona: 450, minPersonas: 4, maxPersonas: 12, imagen: "img/paquete-playa.jpg", destacado: true, badge: "👨‍👩‍👧 Familiar", destinosIds: ["playa-blanca"], hotelId: null, incluye: ["Lancha privada", "Chalecos para niños", "Guía", "Snacks"], noIncluye: ["Almuerzo", "Bebidas"] },
     { id: "paq-aventura-3d", nombre: "Aventura Caribe (3 días)", descripcionCorta: "3 días, 2 noches. Playas + ríos + hotel boutique.", descripcionLarga: "La experiencia completa con hotel boutique frente al mar.", duracionDias: 3, precioPorPersona: 4800, minPersonas: 2, maxPersonas: 10, imagen: "img/paquete-aventura.jpg", destacado: false, badge: "🎒 Aventura", destinosIds: ["playa-blanca", "siete-altares", "rio-dulce", "isla-pajaros"], hotelId: "hotel-boutique-izabal", incluye: ["Todas las lanchas", "Guía bilingüe", "2 noches hotel boutique", "Desayunos", "Entradas"], noIncluye: ["Almuerzos", "Cenas", "Bebidas", "Propinas"] }
 ];
 
-/* 7. CÁLCULO */
+/* 8. CÁLCULO */
 function calcularPrecioTour(tour, adultos, ninos) {
     if (tour.tipoPrecio === "persona") {
         return (tour.precioAdulto || 0) * adultos + (tour.precioNino || 0) * ninos;
@@ -156,7 +384,7 @@ function calcularPrecioReserva(opciones) {
     };
 }
 
-/* 8. UTILIDADES */
+/* 9. UTILIDADES */
 function tourDeDestino(destinoId) {
     return tours.find(function (t) { return t.destinoId === destinoId; });
 }

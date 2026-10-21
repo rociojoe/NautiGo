@@ -26,17 +26,29 @@ function cambiarTipoRegistro(tipo) {
     document.getElementById('reg-campos-lanchero').classList.toggle('oculto', tipo !== 'lanchero');
 }
 
-/* ---------- SUBMIT LOGIN ---------- */
+/* ---------- LOGIN ---------- */
 document.addEventListener('DOMContentLoaded', function () {
-    var loginForm = document.getElementById('form-login');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var email = document.getElementById('login-email').value.trim();
-            var password = document.getElementById('login-password').value;
-            var error = document.getElementById('login-error');
+    document.querySelectorAll('.reg-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            cambiarTipoRegistro(tab.getAttribute('data-rol'));
+        });
+    });
 
-            var res = login(email, password);
+    var loginForm = document.getElementById('form-login');
+    if (!loginForm) return;
+
+    loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var email = document.getElementById('login-email').value.trim();
+        var password = document.getElementById('login-password').value;
+        var error = document.getElementById('login-error');
+        var boton = loginForm.querySelector('button[type="submit"]');
+
+        boton.disabled = true;
+        login(email, password).then(function (res) {
+            boton.disabled = false;
+
             if (!res.ok) {
                 error.textContent = res.error;
                 error.classList.remove('oculto');
@@ -44,33 +56,43 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             error.classList.add('oculto');
-            alert('¡Bienvenido, ' + res.usuario.nombre + '!');
+            loginForm.reset();
             mostrarInicio();
         });
-    }
+    });
+});
 
+/* ---------- REGISTRO ---------- */
+document.addEventListener('DOMContentLoaded', function () {
     var regForm = document.getElementById('form-registro');
-    if (regForm) {
-        regForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var tipo = document.getElementById('reg-rol').value;
-            var datos = {
-                rol: tipo,
-                nombre: document.getElementById('reg-nombre').value.trim(),
-                email: document.getElementById('reg-email').value.trim(),
-                telefono: document.getElementById('reg-telefono').value.trim(),
-                password: document.getElementById('reg-password').value
-            };
+    if (!regForm) return;
 
-            if (tipo === 'lanchero') {
-                datos.nombreLancha = document.getElementById('reg-lancha-nombre').value.trim();
-                datos.capacidad = document.getElementById('reg-lancha-capacidad').value;
-                datos.motorHP = document.getElementById('reg-lancha-motor').value;
-                datos.costoGasolinaHora = document.getElementById('reg-lancha-gasolina').value;
-            }
+    regForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-            var res = registrarUsuario(datos);
-            var error = document.getElementById('reg-error');
+        var tipo = document.getElementById('reg-rol').value;
+        var error = document.getElementById('reg-error');
+        var boton = regForm.querySelector('button[type="submit"]');
+
+        var datos = {
+            rol: tipo,
+            nombre: document.getElementById('reg-nombre').value.trim(),
+            email: document.getElementById('reg-email').value.trim(),
+            telefono: document.getElementById('reg-telefono').value.trim(),
+            password: document.getElementById('reg-password').value
+        };
+
+        if (tipo === 'lanchero') {
+            datos.nombreLancha = document.getElementById('reg-lancha-nombre').value.trim();
+            datos.capacidad = document.getElementById('reg-lancha-capacidad').value;
+            datos.galones = document.getElementById('reg-lancha-galones').value;
+            datos.motorHP = document.getElementById('reg-lancha-motor').value;
+            datos.costoGasolinaHora = document.getElementById('reg-lancha-gasolina').value;
+        }
+
+        boton.disabled = true;
+        registrarUsuario(datos).then(function (res) {
+            boton.disabled = false;
 
             if (!res.ok) {
                 error.textContent = res.error;
@@ -79,50 +101,63 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             error.classList.add('oculto');
-
-            if (tipo === 'lanchero') {
-                alert('¡Registro exitoso! Tu cuenta está pendiente de aprobación por el administrador.');
-            } else {
-                alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-            }
+            regForm.reset();
+            cambiarTipoRegistro('cliente');
+            alert(res.mensaje);
             abrirLogin();
         });
-    }
+    });
 });
 
-/* ---------- PANEL LANCHEO ---------- */
+/* ---------- PANEL LANCHERO ---------- */
 function abrirPanelLanchero() {
-    var sesion = leerSesion();
-    if (!sesion || sesion.rol !== 'lanchero') return;
-
-    var usuario = buscarUsuarioPorId(sesion.id);
-    if (!usuario) return;
+    if (!SESION || SESION.rol !== 'lanchero') return;
 
     ocultarTodas();
-    var panel = document.getElementById('vista-panel-lanchero');
-    panel.classList.remove('oculto');
+    document.getElementById('vista-panel-lanchero').classList.remove('oculto');
 
-    document.getElementById('pl-nombre').textContent = usuario.nombre;
-    document.getElementById('pl-email').textContent = usuario.email;
-    document.getElementById('pl-estado').textContent = usuario.estado === 'aprobado' ? '✅ Aprobado' : usuario.estado === 'rechazado' ? '❌ Rechazado' : '⏳ Pendiente';
-    document.getElementById('pl-estado').className = 'pl-estado estado-' + usuario.estado;
+    var u = SESION;
+    var l = u.lancha;
 
-    if (usuario.lancha) {
-        document.getElementById('pl-lancha-nombre').textContent = usuario.lancha.nombre;
-        document.getElementById('pl-lancha-capacidad').textContent = usuario.lancha.capacidad + ' personas';
-        document.getElementById('pl-lancha-motor').textContent = usuario.lancha.motorHP + ' HP';
-        document.getElementById('pl-lancha-gasolina').textContent = 'Q' + usuario.lancha.costoGasolinaHora + '/hora';
-        document.getElementById('pl-lancha-activa').textContent = usuario.lancha.activa ? '🟢 Activa' : '🔴 Inactiva (pendiente)';
+    document.getElementById('pl-nombre').textContent = u.nombre;
+    document.getElementById('pl-email').textContent = u.email;
+
+    var estado = document.getElementById('pl-estado');
+    estado.textContent = u.estado === 'aprobado' ? 'Aprobado'
+                       : u.estado === 'rechazado' ? 'Rechazado' : 'Pendiente';
+    estado.className = 'pl-estado estado-' + u.estado;
+
+    if (l) {
+        document.getElementById('pl-lancha-nombre').textContent = l.nombre;
+        document.getElementById('pl-lancha-capacidad').textContent = l.aforo + ' personas';
+        document.getElementById('pl-lancha-galones').textContent = l.galones + ' galones';
+        document.getElementById('pl-lancha-motor').textContent = l.motorHP + ' HP';
+        document.getElementById('pl-lancha-gasolina').textContent = Q(l.costoGasolinaHora) + '/hora';
+        var activa = document.getElementById('pl-lancha-activa');
+        activa.textContent = l.activa ? 'Activa' : 'Inactiva';
+        activa.className = 'pl-estado estado-' + (l.activa ? 'activa' : 'inactiva');
     }
-
-    // Reservas que le pertenecen
-    var todasReservas = leerReservas();
-    var misReservas = todasReservas.filter(function (r) {
-        return r.lanchaId && usuario.lancha && r.lanchaNombre === usuario.lancha.nombre;
-    });
 
     var cont = document.getElementById('pl-reservas');
     cont.innerHTML = '';
+
+    if (u.estado !== 'aprobado') {
+        var aviso = document.createElement('p');
+        aviso.className = 'panel-vacio';
+        aviso.textContent = u.estado === 'rechazado'
+            ? 'Tu solicitud fue rechazada. Pregunta al administrador qué falta para aprobarla.'
+            : 'Cuando el administrador apruebe tu cuenta verás aquí las reservas de tu lancha.';
+        cont.appendChild(aviso);
+        window.scrollTo(0, 0);
+        return;
+    }
+
+    /* Las reservas aún viven en localStorage (Paso 3); el único vínculo
+       posible hoy es el nombre de la lancha, no su id. */
+    var misReservas = l ? leerReservas().filter(function (r) {
+        return r.lanchaNombre === l.nombre;
+    }) : [];
+
     if (misReservas.length === 0) {
         cont.innerHTML = '<p class="panel-vacio">Aún no tienes reservas asignadas.</p>';
     } else {
@@ -131,8 +166,8 @@ function abrirPanelLanchero() {
             div.className = 'panel-reserva-item';
             div.innerHTML =
                 '<div>' +
-                    '<strong>' + r.codigo + '</strong> — ' + r.destinoNombre +
-                    '<br><small>📅 ' + r.fecha + ' · 👥 ' + (r.adultos + r.ninos) + ' personas</small>' +
+                    '<strong>' + esc(r.codigo) + '</strong> — ' + esc(r.destinoNombre) +
+                    '<br><small>' + esc(r.fecha) + ' · ' + (r.adultos + r.ninos) + ' personas</small>' +
                 '</div>' +
                 '<div class="panel-reserva-total">' + Q(r.desglose.total) + '</div>';
             cont.appendChild(div);
@@ -144,8 +179,7 @@ function abrirPanelLanchero() {
 
 /* ---------- PANEL ADMIN ---------- */
 function abrirPanelAdmin() {
-    var sesion = leerSesion();
-    if (!sesion || sesion.rol !== 'admin') return;
+    if (!SESION || SESION.rol !== 'admin') return;
 
     ocultarTodas();
     document.getElementById('vista-panel-admin').classList.remove('oculto');
@@ -156,73 +190,79 @@ function abrirPanelAdmin() {
 }
 
 function renderizarAdminLancheros() {
-    var pendientes = obtenerLancherosPendientes();
-    var aprobados = obtenerLancherosAprobados();
     var cont = document.getElementById('admin-lancheros');
-    cont.innerHTML = '';
+    cont.innerHTML = '<p class="panel-vacio">Cargando…</p>';
 
-    if (pendientes.length > 0) {
-        var h = document.createElement('h3');
-        h.textContent = '⏳ Pendientes de aprobación (' + pendientes.length + ')';
-        cont.appendChild(h);
+    obtenerLancheros().then(function (todos) {
+        cont.innerHTML = '';
 
-        pendientes.forEach(function (u) {
-            var div = document.createElement('div');
-            div.className = 'admin-item admin-pendiente';
-            div.innerHTML =
-                '<div>' +
-                    '<strong>' + u.nombre + '</strong>' +
-                    '<br><small>' + u.email + ' · ' + (u.telefono || 'sin teléfono') + '</small>' +
-                    '<br><small>🚤 ' + u.lancha.nombre + ' — ' + u.lancha.capacidad + ' personas — ' + u.lancha.motorHP + 'HP</small>' +
-                '</div>' +
-                '<div class="admin-item-acciones">' +
-                    '<button class="btn-aprobar" data-id="' + u.id + '">Aprobar</button>' +
-                    '<button class="btn-rechazar" data-id="' + u.id + '">Rechazar</button>' +
-                '</div>';
-            cont.appendChild(div);
+        if (!todos.length) {
+            cont.innerHTML = '<p class="panel-vacio">No hay lancheros registrados.</p>';
+            return;
+        }
+
+        function grupo(titulo, clase, lista, pendientes) {
+            if (!lista.length) return;
+
+            var h = document.createElement('h3');
+            h.className = 'admin-grupo';
+            h.innerHTML = esc(titulo) + ' <span>' + lista.length + '</span>';
+            cont.appendChild(h);
+
+            lista.forEach(function (u) {
+                var l = u.lancha;
+                var div = document.createElement('div');
+                div.className = 'admin-item ' + clase;
+                div.innerHTML =
+                    '<div>' +
+                        '<strong>' + esc(u.nombre) + '</strong>' +
+                        '<br><small>' + esc(u.email) + ' · ' + esc(u.telefono || 'sin teléfono') + '</small>' +
+                        (l ? '<br><small>Lancha ' + esc(l.nombre) + ' · ' + l.aforo + ' personas · ' +
+                             l.galones + ' galones · ' + (l.motorHP || 0) + ' HP</small>' : '') +
+                        (u.motivo ? '<br><small>Motivo: ' + esc(u.motivo) + '</small>' : '') +
+                    '</div>' +
+                    (pendientes
+                        ? '<div class="admin-item-acciones">' +
+                            '<button class="btn-aprobar" data-id="' + u.id + '">Aprobar</button>' +
+                            '<button class="btn-rechazar" data-id="' + u.id + '">Rechazar</button>' +
+                          '</div>'
+                        : '<div class="admin-item-acciones">' +
+                            '<button class="btn-rechazar" data-id="' + u.id + '">Suspender</button>' +
+                          '</div>');
+                cont.appendChild(div);
+            });
+        }
+
+        grupo('Pendientes de aprobación', 'admin-pendiente',
+              todos.filter(function (u) { return u.estado === 'pendiente'; }), true);
+        grupo('Aprobados', 'admin-aprobado',
+              todos.filter(function (u) { return u.estado === 'aprobado'; }), false);
+        grupo('Rechazados o suspendidos', 'admin-rechazado',
+              todos.filter(function (u) { return u.estado === 'rechazado'; }), false);
+
+        cont.querySelectorAll('.btn-aprobar').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('¿Aprobar a este lanchero y activar su lancha?')) return;
+                btn.disabled = true;
+                aprobarLanchero(btn.getAttribute('data-id')).then(function (res) {
+                    btn.disabled = false;
+                    if (!res.ok) alert(res.error);
+                    renderizarAdminLancheros();
+                });
+            });
         });
-    }
 
-    if (aprobados.length > 0) {
-        var h2 = document.createElement('h3');
-        h2.textContent = '✅ Aprobados (' + aprobados.length + ')';
-        h2.style.marginTop = '24px';
-        cont.appendChild(h2);
-
-        aprobados.forEach(function (u) {
-            var div = document.createElement('div');
-            div.className = 'admin-item admin-aprobado';
-            div.innerHTML =
-                '<div>' +
-                    '<strong>' + u.nombre + '</strong>' +
-                    '<br><small>' + u.email + '</small>' +
-                    '<br><small>🚤 ' + u.lancha.nombre + '</small>' +
-                '</div>' +
-                '<div class="admin-item-acciones">' +
-                    '<button class="btn-rechazar" data-id="' + u.id + '">Suspender</button>' +
-                '</div>';
-            cont.appendChild(div);
-        });
-    }
-
-    if (pendientes.length === 0 && aprobados.length === 0) {
-        cont.innerHTML = '<p class="panel-vacio">No hay lancheros registrados.</p>';
-    }
-
-    cont.querySelectorAll('.btn-aprobar').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            if (confirm('¿Aprobar a este lanchero?')) {
-                aprobarLanchero(btn.getAttribute('data-id'));
-                renderizarAdminLancheros();
-            }
-        });
-    });
-    cont.querySelectorAll('.btn-rechazar').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            if (confirm('¿Rechazar/suspender a este lanchero?')) {
-                rechazarLanchero(btn.getAttribute('data-id'));
-                renderizarAdminLancheros();
-            }
+        cont.querySelectorAll('.btn-rechazar').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var motivo = prompt('Motivo del rechazo o la suspensión:');
+                if (motivo === null) return;
+                btn.disabled = true;
+                rechazarLanchero(btn.getAttribute('data-id'), motivo.trim()).then(function (res) {
+                    btn.disabled = false;
+                    if (!res.ok) alert(res.error);
+                    renderizarAdminLancheros();
+                });
+            });
         });
     });
 }
@@ -231,24 +271,27 @@ function renderizarAdminHoteles() {
     var cont = document.getElementById('admin-hoteles');
     cont.innerHTML = '';
 
-    var todos = obtenerTodosLosHoteles();
+    var propios = {};
+    leerHotelesAdmin().forEach(function (h) { propios[h.id] = true; });
 
-    todos.forEach(function (h) {
+    obtenerTodosLosHoteles().forEach(function (h) {
         var div = document.createElement('div');
         div.className = 'admin-item';
         div.innerHTML =
             '<div>' +
-                '<strong>' + h.nombre + '</strong>' +
-                '<br><small>' + h.categoria + ' · ' + h.ubicacion + '</small>' +
+                '<strong>' + esc(h.nombre) + '</strong>' +
+                '<br><small>' + esc(h.categoria) + ' · ' + esc(h.ubicacion) + '</small>' +
                 '<br><small>' + Q(h.precioNoche) + '/noche</small>' +
             '</div>' +
-            '<div class="admin-item-acciones">' +
-                '<button class="btn-rechazar" data-hotel-id="' + h.id + '">Eliminar</button>' +
-            '</div>';
+            (propios[h.id]
+                ? '<div class="admin-item-acciones">' +
+                    '<button class="btn-rechazar" data-hotel-id="' + h.id + '">Eliminar</button>' +
+                  '</div>'
+                : '');
         cont.appendChild(div);
     });
 
-    if (todos.length === 0) {
+    if (!cont.hasChildNodes()) {
         cont.innerHTML = '<p class="panel-vacio">No hay hoteles registrados.</p>';
     }
 
@@ -278,13 +321,13 @@ function renderizarAdminReservas() {
         div.className = 'panel-reserva-item';
         div.innerHTML =
             '<div>' +
-                '<strong>' + r.codigo + '</strong> — ' + r.destinoNombre +
-                '<br><small>👤 ' + r.cliente.nombre + ' · ' + r.cliente.email + '</small>' +
-                '<br><small>📅 ' + r.fecha + ' · 🚤 ' + r.lancheroNombre + '</small>' +
+                '<strong>' + esc(r.codigo) + '</strong> — ' + esc(r.destinoNombre) +
+                '<br><small>' + esc(r.cliente.nombre) + ' · ' + esc(r.cliente.email) + '</small>' +
+                '<br><small>' + esc(r.fecha) + ' · Lancha ' + esc(r.lancheroNombre) + '</small>' +
             '</div>' +
             '<div>' +
                 '<div class="panel-reserva-total">' + Q(r.desglose.total) + '</div>' +
-                '<div class="panel-reserva-estado">' + r.estado + '</div>' +
+                '<div class="panel-reserva-estado">' + esc(r.estado) + '</div>' +
             '</div>';
         cont.appendChild(div);
     });
@@ -293,36 +336,33 @@ function renderizarAdminReservas() {
 /* ---------- FORM HOTEL ADMIN ---------- */
 document.addEventListener('DOMContentLoaded', function () {
     var formHotel = document.getElementById('form-hotel-admin');
-    if (formHotel) {
-        formHotel.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var hotel = {
-                nombre: document.getElementById('hotel-nombre').value.trim(),
-                categoria: document.getElementById('hotel-categoria').value,
-                precioNoche: parseFloat(document.getElementById('hotel-precio').value),
-                estrellas: parseInt(document.getElementById('hotel-estrellas').value, 10) || 3,
-                ubicacion: document.getElementById('hotel-ubicacion').value.trim(),
-                descripcion: document.getElementById('hotel-descripcion').value.trim(),
-                imagen: 'img/hotel-default.jpg'
-            };
+    if (!formHotel) return;
 
-            if (!hotel.nombre || !hotel.precioNoche) {
-                alert('Nombre y precio son obligatorios');
-                return;
-            }
+    formHotel.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var hotel = {
+            nombre: document.getElementById('hotel-nombre').value.trim(),
+            categoria: document.getElementById('hotel-categoria').value,
+            precioNoche: parseFloat(document.getElementById('hotel-precio').value),
+            estrellas: parseInt(document.getElementById('hotel-estrellas').value, 10) || 3,
+            ubicacion: document.getElementById('hotel-ubicacion').value.trim(),
+            descripcion: document.getElementById('hotel-descripcion').value.trim(),
+            imagen: 'img/hotel-default.jpg'
+        };
 
-            agregarHotelAdmin(hotel);
-            formHotel.reset();
-            alert('Hotel agregado con éxito');
-            renderizarAdminHoteles();
-        });
-    }
+        if (!hotel.nombre || !hotel.precioNoche) {
+            alert('Nombre y precio son obligatorios');
+            return;
+        }
+
+        agregarHotelAdmin(hotel);
+        formHotel.reset();
+        alert('Hotel agregado con éxito');
+        renderizarAdminHoteles();
+    });
 });
 
-/* ---------- INICIALIZAR UI AL CARGAR ---------- */
-document.addEventListener('DOMContentLoaded', function () {
-    actualizarUIUsuario();
-});
+/* ---------- ENLACES CRUZADOS LOGIN / REGISTRO ---------- */
 document.addEventListener('DOMContentLoaded', function () {
     var irReg = document.getElementById('ir-registro');
     var irLog = document.getElementById('ir-login');
