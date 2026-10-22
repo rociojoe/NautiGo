@@ -35,8 +35,17 @@ if ($u['rol'] === 'lanchero') {
     }
 }
 
+/* La foto y el banner se leen frescos para que un cambio
+   se vea sin necesidad de volver a iniciar sesión. */
+$media = ['foto' => null, 'banner' => null];
+$f = db()->prepare('SELECT foto, banner FROM usuarios WHERE id = :id');
+$f->execute([':id' => $u['id']]);
+if ($fila = $f->fetch(PDO::FETCH_ASSOC)) {
+    $media = ['foto' => $fila['foto'], 'banner' => $fila['banner']];
+}
+
 responder([
     'ok'      => true,
-    'usuario' => $u + ['lancha' => $lancha],
+    'usuario' => $u + $media + ['lancha' => $lancha],
     'csrf'    => csrf_token(),
 ]);

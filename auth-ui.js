@@ -109,6 +109,35 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+/* ---------- ACCIONES DE RESERVA (lanchero y admin) ---------- */
+function botonesDeEstadoReserva(r) {
+    if (r.estado === 'pendiente') {
+        return '<button class="btn-aprobar" data-codigo="' + r.codigo + '" data-estado="confirmada">Confirmar</button>' +
+               '<button class="btn-rechazar" data-codigo="' + r.codigo + '" data-estado="cancelada">Cancelar</button>';
+    }
+    if (r.estado === 'confirmada') {
+        return '<button class="btn-aprobar" data-codigo="' + r.codigo + '" data-estado="completada">Completar</button>' +
+               '<button class="btn-rechazar" data-codigo="' + r.codigo + '" data-estado="cancelada">Cancelar</button>';
+    }
+    return '';
+}
+
+function conectarBotonesDeEstado(cont, alTerminar) {
+    cont.querySelectorAll('[data-estado]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var codigo = btn.getAttribute('data-codigo');
+            var estado = btn.getAttribute('data-estado');
+            var frase = estado === 'cancelada' ? 'cancelar' : 'marcar como ' + estado;
+            if (!confirm('¿Seguro que quieres ' + frase + ' la reserva ' + codigo + '?')) return;
+            btn.disabled = true;
+            api('api/reserva_estado.php', { codigo: codigo, estado: estado }).then(function (j) {
+                if (!j.ok) alert(j.error);
+                alTerminar();
+            });
+        });
+    });
+}
+
 /* ---------- PANEL LANCHERO ---------- */
 function abrirPanelLanchero() {
     if (!SESION || SESION.rol !== 'lanchero') return;
@@ -139,9 +168,9 @@ function abrirPanelLanchero() {
     }
 
     var cont = document.getElementById('pl-reservas');
-    cont.innerHTML = '';
 
     if (u.estado !== 'aprobado') {
+        cont.innerHTML = '';
         var aviso = document.createElement('p');
         aviso.className = 'panel-vacio';
         aviso.textContent = u.estado === 'rechazado'
@@ -152,27 +181,42 @@ function abrirPanelLanchero() {
         return;
     }
 
-    /* Las reservas aún viven en localStorage (Paso 3); el único vínculo
-       posible hoy es el nombre de la lancha, no su id. */
-    var misReservas = l ? leerReservas().filter(function (r) {
-        return r.lanchaNombre === l.nombre;
-    }) : [];
+    /* El servidor filtra las reservas por el nombre de la lancha del lanchero. */
+    cont.innerHTML = '<p class="panel-vacio">Cargando…</p>';
+    api('api/reservas_mias.php').then(function (j) {
+        cont.innerHTML = '';
+        var lista = (j.ok ? j.reservas : []).map(function (r) {
+            var d = destinos.find(function (x) { return x.id === r.destinoSlug; });
+            return {
+                codigo: r.codigo,
+                estado: r.estado,
+                destinoNombre: d ? d.nombre : r.destinoSlug,
+                fecha: r.fecha,
+                personas: pasajerosDeReserva(r.adultos, r.ninos, r.bebes),
+                personasTexto: textoPersonas(r.adultos, r.ninos, r.bebes),
+                total: r.total
+            };
+        });
 
-    if (misReservas.length === 0) {
-        cont.innerHTML = '<p class="panel-vacio">Aún no tienes reservas asignadas.</p>';
-    } else {
-        misReservas.forEach(function (r) {
+        if (lista.length === 0) {
+            cont.innerHTML = '<p class="panel-vacio">Aún no tienes reservas asignadas.</p>';
+            return;
+        }
+        lista.forEach(function (r) {
+            var botones = botonesDeEstadoReserva(r);
             var div = document.createElement('div');
             div.className = 'panel-reserva-item';
             div.innerHTML =
                 '<div>' +
                     '<strong>' + esc(r.codigo) + '</strong> — ' + esc(r.destinoNombre) +
-                    '<br><small>' + esc(r.fecha) + ' · ' + (r.adultos + r.ninos) + ' personas</small>' +
+                    '<br><small>' + esc(r.fecha) + ' · ' + esc(r.personasTexto) + ' · ' + esc(r.estado) + '</small>' +
+                    (botones ? '<div class="admin-item-acciones">' + botones + '</div>' : '') +
                 '</div>' +
-                '<div class="panel-reserva-total">' + Q(r.desglose.total) + '</div>';
+                '<div class="panel-reserva-total">' + Q(r.total) + '</div>';
             cont.appendChild(div);
         });
-    }
+        conectarBotonesDeEstado(cont, abrirPanelLanchero);
+    });
 
     window.scrollTo(0, 0);
 }
@@ -186,6 +230,7 @@ function abrirPanelAdmin() {
     renderizarAdminLancheros();
     renderizarAdminHoteles();
     renderizarAdminReservas();
+    renderizarAdminMensajes();
     window.scrollTo(0, 0);
 }
 
@@ -269,67 +314,107 @@ function renderizarAdminLancheros() {
 
 function renderizarAdminHoteles() {
     var cont = document.getElementById('admin-hoteles');
-    cont.innerHTML = '';
+    cont.innerHTML = '<p class="panel-vacio">Cargando…</p>';
 
-    var propios = {};
-    leerHotelesAdmin().forEach(function (h) { propios[h.id] = true; });
+    cargarHotelesServidor().then(function (delServidor) {
+        cont.innerHTML = '';
 
-    obtenerTodosLosHoteles().forEach(function (h) {
-        var div = document.createElement('div');
-        div.className = 'admin-item';
-        div.innerHTML =
-            '<div>' +
-                '<strong>' + esc(h.nombre) + '</strong>' +
-                '<br><small>' + esc(h.categoria) + ' · ' + esc(h.ubicacion) + '</small>' +
-                '<br><small>' + Q(h.precioNoche) + '/noche</small>' +
-            '</div>' +
-            (propios[h.id]
-                ? '<div class="admin-item-acciones">' +
-                    '<button class="btn-rechazar" data-hotel-id="' + h.id + '">Eliminar</button>' +
-                  '</div>'
-                : '');
-        cont.appendChild(div);
-    });
+        function tarjeta(h, esDelServidor) {
+            var div = document.createElement('div');
+            div.className = 'admin-item';
+            div.innerHTML =
+                '<div>' +
+                    '<strong>' + esc(h.nombre) + '</strong>' +
+                    '<br><small>' + esc(h.categoria) + ' · ' + esc(h.ubicacion || 'sin ubicación') + '</small>' +
+                    '<br><small>' + Q(h.precioNoche) + '/noche' + (esDelServidor ? '' : ' · catálogo demo') + '</small>' +
+                '</div>' +
+                (esDelServidor
+                    ? '<div class="admin-item-acciones">' +
+                        '<button class="btn-rechazar" data-hotel-db="' + h.dbId + '">Eliminar</button>' +
+                      '</div>'
+                    : '');
+            cont.appendChild(div);
+        }
 
-    if (!cont.hasChildNodes()) {
-        cont.innerHTML = '<p class="panel-vacio">No hay hoteles registrados.</p>';
-    }
+        hoteles.forEach(function (h) { tarjeta(h, false); });
+        delServidor.forEach(function (h) { tarjeta(h, true); });
 
-    cont.querySelectorAll('[data-hotel-id]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var id = btn.getAttribute('data-hotel-id');
-            if (confirm('¿Eliminar este hotel?')) {
-                eliminarHotelAdmin(id);
-                renderizarAdminHoteles();
-            }
+        if (!hoteles.length && !delServidor.length) {
+            cont.innerHTML = '<p class="panel-vacio">No hay hoteles registrados.</p>';
+        }
+
+        cont.querySelectorAll('[data-hotel-db]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('¿Eliminar este hotel?')) return;
+                btn.disabled = true;
+                api('api/hotel_eliminar.php', { id: btn.getAttribute('data-hotel-db') }).then(function (j) {
+                    if (!j.ok) alert(j.error);
+                    renderizarAdminHoteles();
+                });
+            });
         });
     });
 }
 
 function renderizarAdminReservas() {
-    var lista = leerReservas();
     var cont = document.getElementById('admin-reservas');
-    cont.innerHTML = '';
+    cont.innerHTML = '<p class="panel-vacio">Cargando…</p>';
 
-    if (lista.length === 0) {
-        cont.innerHTML = '<p class="panel-vacio">No hay reservas todavía.</p>';
-        return;
-    }
+    api('api/reservas_mias.php').then(function (j) {
+        cont.innerHTML = '';
+        var lista = j.ok ? j.reservas : [];
 
-    lista.forEach(function (r) {
-        var div = document.createElement('div');
-        div.className = 'panel-reserva-item';
-        div.innerHTML =
-            '<div>' +
-                '<strong>' + esc(r.codigo) + '</strong> — ' + esc(r.destinoNombre) +
-                '<br><small>' + esc(r.cliente.nombre) + ' · ' + esc(r.cliente.email) + '</small>' +
-                '<br><small>' + esc(r.fecha) + ' · Lancha ' + esc(r.lancheroNombre) + '</small>' +
-            '</div>' +
-            '<div>' +
-                '<div class="panel-reserva-total">' + Q(r.desglose.total) + '</div>' +
-                '<div class="panel-reserva-estado">' + esc(r.estado) + '</div>' +
-            '</div>';
-        cont.appendChild(div);
+        if (lista.length === 0) {
+            cont.innerHTML = '<p class="panel-vacio">No hay reservas todavía.</p>';
+            return;
+        }
+
+        lista.forEach(function (r) {
+            var d = destinos.find(function (x) { return x.id === r.destinoSlug; });
+            var botones = botonesDeEstadoReserva(r);
+            var div = document.createElement('div');
+            div.className = 'panel-reserva-item';
+            div.innerHTML =
+                '<div>' +
+                    '<strong>' + esc(r.codigo) + '</strong> — ' + esc(d ? d.nombre : r.destinoSlug) +
+                    '<br><small>' + esc(r.clienteNombre || 'sin nombre') + ' · ' + esc(r.clienteEmail || 'sin correo') + '</small>' +
+                    '<br><small>' + esc(r.fecha) + ' · Lancha ' + esc(r.lanchaNombre || 'sin asignar') + ' — ' + esc(r.lancheroNombre || 'sin lanchero') + '</small>' +
+                    (botones ? '<div class="admin-item-acciones">' + botones + '</div>' : '') +
+                '</div>' +
+                '<div>' +
+                    '<div class="panel-reserva-total">' + Q(r.total) + '</div>' +
+                    '<div class="panel-reserva-estado">' + esc(r.estado) + '</div>' +
+                '</div>';
+            cont.appendChild(div);
+        });
+        conectarBotonesDeEstado(cont, renderizarAdminReservas);
+    });
+}
+
+function renderizarAdminMensajes() {
+    var cont = document.getElementById('admin-mensajes');
+    cont.innerHTML = '<p class="panel-vacio">Cargando…</p>';
+
+    api('api/mensajes.php').then(function (j) {
+        cont.innerHTML = '';
+        var lista = j.ok ? j.mensajes : [];
+
+        if (lista.length === 0) {
+            cont.innerHTML = '<p class="panel-vacio">No hay mensajes todavía.</p>';
+            return;
+        }
+
+        lista.forEach(function (m) {
+            var div = document.createElement('div');
+            div.className = 'admin-item';
+            div.innerHTML =
+                '<div>' +
+                    '<strong>' + esc(m.asunto || 'Sin asunto') + '</strong>' +
+                    '<br><small>' + esc(m.nombre) + ' · ' + esc(m.email) + ' · ' + esc(m.creadoEn) + '</small>' +
+                    '<br><span>' + esc(m.mensaje) + '</span>' +
+                '</div>';
+            cont.appendChild(div);
+        });
     });
 }
 
@@ -340,25 +425,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
     formHotel.addEventListener('submit', function (e) {
         e.preventDefault();
-        var hotel = {
+        var boton = formHotel.querySelector('button[type="submit"]');
+        var datos = {
             nombre: document.getElementById('hotel-nombre').value.trim(),
             categoria: document.getElementById('hotel-categoria').value,
             precioNoche: parseFloat(document.getElementById('hotel-precio').value),
             estrellas: parseInt(document.getElementById('hotel-estrellas').value, 10) || 3,
             ubicacion: document.getElementById('hotel-ubicacion').value.trim(),
-            descripcion: document.getElementById('hotel-descripcion').value.trim(),
-            imagen: 'img/hotel-default.jpg'
+            descripcion: document.getElementById('hotel-descripcion').value.trim()
         };
 
-        if (!hotel.nombre || !hotel.precioNoche) {
+        if (!datos.nombre || !datos.precioNoche) {
             alert('Nombre y precio son obligatorios');
             return;
         }
 
-        agregarHotelAdmin(hotel);
-        formHotel.reset();
-        alert('Hotel agregado con éxito');
-        renderizarAdminHoteles();
+        boton.disabled = true;
+        api('api/hoteles.php', datos).then(function (j) {
+            boton.disabled = false;
+            if (!j.ok) {
+                alert(j.error);
+                return;
+            }
+            formHotel.reset();
+            alert('Hotel agregado con éxito');
+            renderizarAdminHoteles();
+        });
     });
 });
 

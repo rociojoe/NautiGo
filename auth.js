@@ -96,24 +96,6 @@ function cerrarSesion() {
 }
 
 /* -----------------------------------------
-   PUNTOS
-   ----------------------------------------- */
-function calcularPuntosGanados(totalReserva) {
-    /* 10 puntos por cada Q100 gastados */
-    return Math.floor(totalReserva / 100) * 10;
-}
-
-function agregarPuntos(puntos) {
-    return api('api/puntos.php', { puntos: puntos }).then(function (j) {
-        if (j.ok && SESION) {
-            SESION.puntos = j.puntos;
-            actualizarUIUsuario();
-        }
-        return j;
-    });
-}
-
-/* -----------------------------------------
    LANCHEROS (para el admin)
    ----------------------------------------- */
 function obtenerLancheros() {
@@ -131,38 +113,32 @@ function rechazarLanchero(usuarioId, motivo) {
 }
 
 /* -----------------------------------------
-   HOTELES (admin) — siguen en localStorage
-   hasta que el catálogo pase a la base de datos
+   HOTELES (catálogo demo de datos.js + los del
+   admin, que viven en MySQL)
    ----------------------------------------- */
-var HOTELES_KEY = 'nautigo_hoteles_admin';
+var HOTELES_SERVIDOR = [];
 
-function leerHotelesAdmin() {
-    try {
-        var d = localStorage.getItem(HOTELES_KEY);
-        return d ? JSON.parse(d) : [];
-    } catch (e) { return []; }
+function cargarHotelesServidor() {
+    return api('api/hoteles.php').then(function (j) {
+        if (j.ok) HOTELES_SERVIDOR = j.hoteles;
+        return HOTELES_SERVIDOR;
+    });
 }
 
-function guardarHotelesAdmin(lista) {
-    localStorage.setItem(HOTELES_KEY, JSON.stringify(lista));
+function buscarHotel(id) {
+    return hoteles.find(function (h) { return h.id === id; })
+        || HOTELES_SERVIDOR.find(function (h) { return h.id === id; })
+        || null;
 }
 
-function agregarHotelAdmin(hotel) {
-    var lista = leerHotelesAdmin();
-    hotel.id = 'hotel-' + Date.now();
-    lista.push(hotel);
-    guardarHotelesAdmin(lista);
-    return hotel;
-}
-
-function eliminarHotelAdmin(hotelId) {
-    guardarHotelesAdmin(leerHotelesAdmin().filter(function (h) { return h.id !== hotelId; }));
-}
-
-/* Todos los hoteles = base + admin */
+/* Todos los hoteles = base + servidor */
 function obtenerTodosLosHoteles() {
-    return hoteles.concat(leerHotelesAdmin());
+    return hoteles.concat(HOTELES_SERVIDOR);
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    cargarHotelesServidor();
+});
 
 /* -----------------------------------------
    UI DEL HEADER
@@ -172,6 +148,9 @@ var _menuDocumentado = false;
 function actualizarUIUsuario() {
     var cont = document.getElementById('header-usuario');
     if (!cont) return;
+
+    /* El blog y otras secciones repintan su UI cuando la sesión cambia. */
+    document.dispatchEvent(new CustomEvent('sesion-cambiada'));
 
     if (!SESION) {
         cont.innerHTML =
@@ -191,14 +170,17 @@ function actualizarUIUsuario() {
     var esLanchero = SESION.rol === 'lanchero';
     var pendiente  = esLanchero && SESION.estado === 'pendiente';
     var inicial = SESION.nombre.charAt(0).toUpperCase();
+    var avatar = SESION.foto
+        ? '<span class="usuario-avatar"><img class="blog-avatar-img" src="' + esc(SESION.foto) + '" alt=""></span>'
+        : '<span class="usuario-avatar">' + inicial + '</span>';
     var panelLabel = SESION.rol === 'admin' ? 'Panel Admin' :
                      esLanchero ? (pendiente ? 'Mi solicitud' : 'Panel Lanchero') :
-                     'Mis reservas';
+                     'Mi perfil';
 
     cont.innerHTML =
         '<div class="usuario-menu">' +
             '<button id="usuario-toggle" class="usuario-toggle">' +
-                '<span class="usuario-avatar">' + inicial + '</span>' +
+                avatar +
                 '<span class="usuario-nombre">' + esc(SESION.nombre.split(' ')[0]) + '</span>' +
                 (SESION.rol === 'cliente' ? '<span class="usuario-puntos">' + SESION.puntos + ' pts</span>' : '') +
                 ' ▾' +
@@ -232,7 +214,7 @@ function actualizarUIUsuario() {
     document.getElementById('usuario-panel').addEventListener('click', function () {
         if (SESION.rol === 'admin') abrirPanelAdmin();
         else if (esLanchero) abrirPanelLanchero();
-        else abrirMisReservas();
+        else abrirPerfil(SESION.id);
     });
 
     document.getElementById('usuario-logout').addEventListener('click', function () {

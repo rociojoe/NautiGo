@@ -60,8 +60,7 @@ var CATEGORIAS = {
 
 /* 3. DESTINOS
    `categorias` manda en el filtro; `tipo` es solo la etiqueta del detalle.
-   Los que no tienen tour en la lista de abajo se pueden ver pero no reservar
-   todavía: el detalle muestra "precio por confirmar". */
+   Todos tienen un tour en la lista de abajo y se cobran por persona. */
 var destinos = [
     {
         id: "playa-blanca", nombre: "Playa Blanca", tipo: "playa",
@@ -77,7 +76,7 @@ var destinos = [
         categorias: ["playa"],
         descripcionCorta: "Playa serena de la costa de Livingston.",
         descripcionLarga: "Punta de Cocolí es una playa de la costa de Livingston, de acceso en lancha y ambiente tranquilo. Buena opción para un día de sol y mar sin multitudes.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/punta-cocoli.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -95,7 +94,7 @@ var destinos = [
         categorias: ["playa", "restaurante"],
         descripcionCorta: "Playa con restaurante frente al mar.",
         descripcionLarga: "Bahía Azul reúne playa y restaurante en el mismo lugar: se llega en lancha desde Livingston, se come ahí mismo y se regresa tranquilo.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/bahia-azul.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
     },
@@ -104,7 +103,7 @@ var destinos = [
         categorias: ["playa", "restaurante", "hotel"],
         descripcionCorta: "Playa, restaurante y hospedaje en un solo lugar.",
         descripcionLarga: "Salvador Gaviota es un destino de playa con restaurante y habitaciones, pensado para quedarse más de un día. Se llega en lancha desde Livingston.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/salvador-gaviota.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -113,16 +112,16 @@ var destinos = [
         categorias: ["playa", "restaurante", "hotel"],
         descripcionCorta: "Playa con hotel y restaurante a pie de mar.",
         descripcionLarga: "Playa Quehueche combina la playa con servicio de restaurante y hospedaje, así que funciona tanto para un día de visita como para quedarse a dormir.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/playa-quehueche.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
     {
-        id: "vuelve-mujer", nombre: "Vuelve Mujer", tipo: "rio",
+        id: "vuelbe-mujer", nombre: "Vuelbe Mujer", tipo: "rio",
         categorias: ["rio", "pozas"],
         descripcionCorta: "Río de pozas naturales y sombra.",
-        descripcionLarga: "Vuelve Mujer es un tramo de río con pozas de agua dulce rodeadas de vegetación. Parada frecuente en lancha para refrescarse a mitad del recorrido.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        descripcionLarga: "Vuelbe Mujer es un tramo de río con pozas de agua dulce rodeadas de vegetación. Parada frecuente en lancha para refrescarse a mitad del recorrido.",
+        ubicacion: "Livingston, Izabal", imagen: "img/vuelbe-mujer.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -131,7 +130,7 @@ var destinos = [
         categorias: ["restaurante", "piscina"],
         descripcionCorta: "Restaurante y piscina para el día de salida.",
         descripcionLarga: "Flamingo es un punto de restaurante con piscina, pensado para la visita de un día: se llega en lancha, se come y se disfruta del agua.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/flamingo.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el restaurante", "Entrada a la piscina", "Guía (opcional)"]
     },
@@ -140,7 +139,7 @@ var destinos = [
         categorias: ["hotel", "restaurante"],
         descripcionCorta: "Hotel con restaurante en la zona de Livingston.",
         descripcionLarga: "Livingston Resort es la opción de hospedaje con restaurante incluido en el servicio, para armar un paquete de más de un día en la costa.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/livingston-resort.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -149,7 +148,7 @@ var destinos = [
         categorias: ["playa"],
         descripcionCorta: "Playa tranquila de la costa caribeña.",
         descripcionLarga: "Playa Barique es una playa de la costa de Izabal a la que se llega en lancha. Ambiente tranquilo, ideal para quien busca mar sin tanta concurrencia.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/playa-barique.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -158,16 +157,16 @@ var destinos = [
         categorias: ["playa"],
         descripcionCorta: "Playa de acceso en lancha, poco concurrida.",
         descripcionLarga: "Playa Capitanía es una playa a la que se llega por lancha y se mantiene poco concurrida. Buena parada intermedia en un recorrido por la costa.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/playa-capitania.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
     {
-        id: "bia-caribe", nombre: "Bia Caribe", tipo: "hotel",
+        id: "Villa-caribe", nombre: "Villa Caribe", tipo: "hotel",
         categorias: ["hotel", "playa"],
         descripcionCorta: "Hotel con playa para quedarse más de un día.",
-        descripcionLarga: "Bia Caribe combina hospedaje y playa en el mismo destino, pensado para paquetes de noche con traslado en lancha.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        descripcionLarga: "Villa Caribe combina hospedaje y playa en el mismo destino, pensado para paquetes de noche con traslado en lancha.",
+        ubicacion: "Livingston, Izabal", imagen: "img/villa-caribe.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -176,25 +175,16 @@ var destinos = [
         categorias: ["restaurante"],
         descripcionCorta: "Restaurante para comer entre viaje y viaje.",
         descripcionLarga: "Buga Mama es un punto de restaurante que funciona como parada de comida dentro de un recorrido en lancha por la costa.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/buga-mama.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
-    },
-    {
-        id: "hotel-caribe", nombre: "Hotel Caribe", tipo: "hotel",
-        categorias: ["hotel"],
-        descripcionCorta: "Hospedaje en la zona del Caribe.",
-        descripcionLarga: "Hotel Caribe es la opción de hospedaje del destino, para armar un paquete de una o más noches con traslado en lancha.",
-        ubicacion: "Livingston, Izabal", imagen: null,
-        incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
-        noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
     {
         id: "casa-nostra", nombre: "Casa Nostra", tipo: "hotel",
         categorias: ["hotel", "restaurante"],
         descripcionCorta: "Hotel con restaurante.",
         descripcionLarga: "Casa Nostra es un destino de hospedaje con restaurante, cómodo para quien quiere quedarse a dormir sin salir del lugar.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/casa-nostra.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -203,7 +193,7 @@ var destinos = [
         categorias: ["hotel", "restaurante"],
         descripcionCorta: "Hotel con restaurante.",
         descripcionLarga: "Casa Rosada combina habitaciones y servicio de restaurante en el mismo destino, para visitas de más de un día.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/casa-rosada.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -212,7 +202,7 @@ var destinos = [
         categorias: ["hotel", "restaurante"],
         descripcionCorta: "Posada con restaurante.",
         descripcionLarga: "Posada El Delfín es un hospedaje con restaurante, de ambiente más pequeño y tranquilo, para quedarse la noche tras el recorrido en lancha.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/posada-el-delfin.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -230,7 +220,7 @@ var destinos = [
         categorias: ["playa", "lancha"],
         descripcionCorta: "Isla santuario de aves frente a Livingston.",
         descripcionLarga: "La Isla de Pájaros es un santuario natural donde anidan cientos de aves. El tour incluye un recorrido alrededor de la isla para observar aves y luego una parada en una playa cercana.",
-        ubicacion: "Livingston, Izabal", imagen: null,
+        ubicacion: "Livingston, Izabal", imagen: "img/isla-pajaros.jpg",
         incluye: ["Lancha", "Guía", "Chaleco salvavidas"],
         noIncluye: ["Comida", "Bebidas"]
     },
@@ -241,7 +231,7 @@ var destinos = [
         categorias: ["rio", "restaurante"],
         descripcionCorta: "Restaurante a la orilla del río.",
         descripcionLarga: "Happy Fish es un destino de río con restaurante, para combinar el paseo en lancha con la comida del día.",
-        ubicacion: "Río Dulce, Izabal", imagen: null,
+        ubicacion: "Río Dulce, Izabal", imagen: "img/happy-fish.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
     },
@@ -250,7 +240,7 @@ var destinos = [
         categorias: ["rio", "restaurante", "bungalows"],
         descripcionCorta: "Restaurante y bungalows junto al río.",
         descripcionLarga: "Casa Maya reúne río, restaurante y bungalows, así que sirve tanto para el día como para quedarse a dormir en la orilla.",
-        ubicacion: "Río Dulce, Izabal", imagen: null,
+        ubicacion: "Río Dulce, Izabal", imagen: "img/casa-maya.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -259,7 +249,7 @@ var destinos = [
         categorias: ["rio", "hotel", "restaurante", "piscina", "toboganes", "bungalows"],
         descripcionCorta: "Hotel, restaurante, piscina y toboganes al río.",
         descripcionLarga: "El Viajero es el destino más completo de la zona de ríos: hospedaje, restaurante, piscina y toboganes que bajan al río, con opción de bungalows. Funciona para paquetes de varios días.",
-        ubicacion: "Río Dulce, Izabal", imagen: null,
+        ubicacion: "Río Dulce, Izabal", imagen: "img/el-viajero.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -268,7 +258,7 @@ var destinos = [
         categorias: ["rio", "restaurante", "bungalows", "kayak"],
         descripcionCorta: "Río, restaurante, bungalows y kayak.",
         descripcionLarga: "Finca Tatin es un destino de río con restaurante, bungalows y recorrido en kayak. Uno de los puntos más pedidos para combinar naturaleza y hospedaje.",
-        ubicacion: "Río Dulce, Izabal", imagen: null,
+        ubicacion: "Río Dulce, Izabal", imagen: "img/finca-tatin.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Renta de kayak", "Guía (opcional)"]
     },
@@ -277,7 +267,7 @@ var destinos = [
         categorias: ["rio", "restaurante", "termales"],
         descripcionCorta: "Restaurante y aguas termales.",
         descripcionLarga: "Agua Termales es el destino de aguas termales de la ruta, con restaurante en el lugar. Parada pensada para relajarse a mitad del recorrido.",
-        ubicacion: "Río Dulce, Izabal", imagen: null,
+        ubicacion: "Río Dulce, Izabal", imagen: "img/aguas-termales.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Guía (opcional)"]
     },
@@ -286,7 +276,7 @@ var destinos = [
         categorias: ["rio", "restaurante"],
         descripcionCorta: "Restaurante con vista al cañón del Río Dulce.",
         descripcionLarga: "Cañón del Río es el punto de restaurante sobre el cañón, para comer viendo las paredes de selva y el paso de las lanchas.",
-        ubicacion: "Río Dulce, Izabal", imagen: null,
+        ubicacion: "Río Dulce, Izabal", imagen: "img/canon-del-rio.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el restaurante", "Guía (opcional)"]
     },
@@ -295,7 +285,7 @@ var destinos = [
         categorias: ["rio", "restaurante", "tirolesa", "caballo", "kayak", "lancha"],
         descripcionCorta: "Aventura en el río: tirolesa, caballo, kayak y lancha.",
         descripcionLarga: "Ak' Tenamit es el destino de aventura de la ruta: restaurante junto al río más tirolesa, paseos a caballo, kayak y recorridos en lancha. El más completo para un día activo.",
-        ubicacion: "Río Dulce, Izabal", imagen: null,
+        ubicacion: "Río Dulce, Izabal", imagen: "img/ak-tenamit.jpg",
         incluye: ["Lancha ida y vuelta", "Chaleco salvavidas"],
         noIncluye: ["Consumo en el destino", "Actividades de aventura", "Guía (opcional)"]
     },
@@ -310,25 +300,49 @@ var destinos = [
     }
 ];
 
-/* 4. TOURS */
+/* 4. TOURS
+   Todos los destinos tienen tour para reservar. `lugares` es
+   cuántos sitios visita el recorrido (los tours combinados
+   cobran un pequeño extra por lugar adicional). */
 var tours = [
-    { id: "tour-playa-blanca", destinoId: "playa-blanca", nombre: "Playa Blanca ida y vuelta", tipoPrecio: "persona", precioAdulto: 150, precioNino: 75, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
-    { id: "tour-siete-altares", destinoId: "siete-altares", nombre: "Siete Altares + Playa Blanca", tipoPrecio: "persona", precioAdulto: 200, precioNino: 100, duracionMinutos: 180, minPersonas: 1, maxPersonas: 12 },
-    { id: "tour-rio-dulce", destinoId: "rio-dulce", nombre: "Cañón del Río Dulce + Castillo", tipoPrecio: "persona", precioAdulto: 350, precioNino: 175, duracionMinutos: 240, minPersonas: 2, maxPersonas: 12 },
-    { id: "tour-punta-palma", destinoId: "punta-palma", nombre: "Punta Palma ida y vuelta", tipoPrecio: "persona", precioAdulto: 180, precioNino: 90, duracionMinutos: 150, minPersonas: 1, maxPersonas: 12 },
-    { id: "tour-isla-pajaros", destinoId: "isla-pajaros", nombre: "Isla de Pájaros (lancha completa)", tipoPrecio: "lancha", precioLancha: 1200, duracionMinutos: 90, minPersonas: 1, maxPersonas: 12 }
+    { id: "tour-playa-blanca", destinoId: "playa-blanca", nombre: "Playa Blanca ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-siete-altares", destinoId: "siete-altares", nombre: "Siete Altares + Playa Blanca", lugares: 2, duracionMinutos: 180, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-rio-dulce", destinoId: "rio-dulce", nombre: "Cañón del Río Dulce + Castillo", lugares: 2, duracionMinutos: 240, minPersonas: 2, maxPersonas: 12 },
+    { id: "tour-punta-palma", destinoId: "punta-palma", nombre: "Punta Palma ida y vuelta", lugares: 1, duracionMinutos: 150, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-isla-pajaros", destinoId: "isla-pajaros", nombre: "Isla de Pájaros ida y vuelta", lugares: 1, duracionMinutos: 90, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-punta-cocoli", destinoId: "punta-cocoli", nombre: "Punta de Cocolí ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-bahia-azul", destinoId: "bahia-azul", nombre: "Bahía Azul ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-salvador-gaviota", destinoId: "salvador-gaviota", nombre: "Salvador Gaviota ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-playa-quehueche", destinoId: "playa-quehueche", nombre: "Playa Quehueche ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-vuelbe-mujer", destinoId: "vuelbe-mujer", nombre: "Vuelbe Mujer ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-flamingo", destinoId: "flamingo", nombre: "Flamingo ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-livingston-resort", destinoId: "livingston-resort", nombre: "Livingston Resort ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-playa-barique", destinoId: "playa-barique", nombre: "Playa Barique ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-playa-capitania", destinoId: "playa-capitania", nombre: "Playa Capitanía ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-villa-caribe", destinoId: "Villa-caribe", nombre: "Villa Caribe ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-buga-mama", destinoId: "buga-mama", nombre: "Buga Mama ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-casa-nostra", destinoId: "casa-nostra", nombre: "Casa Nostra ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-casa-rosada", destinoId: "casa-rosada", nombre: "Casa Rosada ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-posada-el-delfin", destinoId: "posada-el-delfin", nombre: "Posada El Delfín ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-happy-fish", destinoId: "happy-fish", nombre: "Happy Fish ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-casa-maya", destinoId: "casa-maya", nombre: "Casa Maya ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-el-viajero", destinoId: "el-viajero", nombre: "El Viajero ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-finca-tatin", destinoId: "finca-tatin", nombre: "Finca Tatin ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-agua-termales", destinoId: "agua-termales", nombre: "Agua Termales ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-canon-del-rio", destinoId: "canon-del-rio", nombre: "Cañón del Río ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 },
+    { id: "tour-ak-tenamit", destinoId: "ak-tenamit", nombre: "Ak' Tenamit ida y vuelta", lugares: 1, duracionMinutos: 120, minPersonas: 1, maxPersonas: 12 }
 ];
 
 /* 5. LANCHEROS Y LANCHAS */
 var lancheros = [
-    { id: "lan-001", nombre: "Juan Pérez", telefono: "5555-1001", aprobado: true },
-    { id: "lan-002", nombre: "María López", telefono: "5555-1002", aprobado: true },
+    { id: "lan-001", nombre: "Matthew Zapata", telefono: "5555-1001", aprobado: true },
+    { id: "lan-002", nombre: "Valeria Suarez", telefono: "5555-1002", aprobado: true },
     { id: "lan-003", nombre: "Carlos García", telefono: "5555-1003", aprobado: true }
 ];
 
 var lanchas = [
-    { id: "lancha-perla", lancheroId: "lan-001", nombre: "La Perla", capacidad: 10, motorHP: 40, costoGasolinaHora: 80, horarioInicio: "06:00", horarioFin: "18:00", activa: true },
-    { id: "lancha-tiburon", lancheroId: "lan-002", nombre: "El Tiburón", capacidad: 8, motorHP: 90, costoGasolinaHora: 150, horarioInicio: "06:00", horarioFin: "18:00", activa: true },
+    { id: "lancha-perla", lancheroId: "lan-001", nombre: "Licuadora", capacidad: 15, motorHP: 40, costoGasolinaHora: 80, horarioInicio: "06:00", horarioFin: "18:00", activa: true },
+    { id: "lancha-tiburon", lancheroId: "lan-002", nombre: "Wilson", capacidad: 8, motorHP: 90, costoGasolinaHora: 150, horarioInicio: "06:00", horarioFin: "18:00", activa: true },
     { id: "lancha-caribe", lancheroId: "lan-003", nombre: "Caribe I", capacidad: 12, motorHP: 60, costoGasolinaHora: 110, horarioInicio: "07:00", horarioFin: "17:00", activa: true }
 ];
 
@@ -346,42 +360,64 @@ var paquetes = [
     { id: "paq-aventura-3d", nombre: "Aventura Caribe (3 días)", descripcionCorta: "3 días, 2 noches. Playas + ríos + hotel boutique.", descripcionLarga: "La experiencia completa con hotel boutique frente al mar.", duracionDias: 3, precioPorPersona: 4800, minPersonas: 2, maxPersonas: 10, imagen: "img/paquete-aventura.jpg", destacado: false, badge: "🎒 Aventura", destinosIds: ["playa-blanca", "siete-altares", "rio-dulce", "isla-pajaros"], hotelId: "hotel-boutique-izabal", incluye: ["Todas las lanchas", "Guía bilingüe", "2 noches hotel boutique", "Desayunos", "Entradas"], noIncluye: ["Almuerzos", "Cenas", "Bebidas", "Propinas"] }
 ];
 
-/* 8. CÁLCULO */
-function calcularPrecioTour(tour, adultos, ninos) {
-    if (tour.tipoPrecio === "persona") {
-        return (tour.precioAdulto || 0) * adultos + (tour.precioNino || 0) * ninos;
-    }
-    if (tour.tipoPrecio === "lancha") {
-        return tour.precioLancha || 0;
-    }
-    return 0;
-}
+/* 8. CÁLCULO
+   Solo se cobra por persona; la ida y vuelta ya va incluida.
+   Mientras más gente viaja, menos paga cada uno:
+   11 a 15 pasajeros Q40 c/u · 10 o menos Q50 c/u.
+   Los tours de varios lugares suman Q5 por lugar extra.
+   Los infantes de 0 a 3 no pagan (van en brazos) pero sí
+   cuentan para el aforo de Capitanía. */
+var TARIFA_GRUPO = [
+    { min: 11, precio: 40 },
+    { min: 1,  precio: 50 }
+];
+var RECARGO_POR_LUGAR = 5;
 
-function calcularGasolina(tour, lancha) {
-    var horas = (tour.duracionMinutos || 0) / 60;
-    return Math.round((lancha.costoGasolinaHora || 0) * horas);
+function tarifaPorPersona(cantidad) {
+    for (var i = 0; i < TARIFA_GRUPO.length; i++) {
+        if (cantidad >= TARIFA_GRUPO[i].min) return TARIFA_GRUPO[i].precio;
+    }
+    return TARIFA_GRUPO[TARIFA_GRUPO.length - 1].precio;
 }
 
 function calcularPrecioReserva(opciones) {
     var tour   = tours.find(function (t) { return t.id === opciones.tourId; });
     var lancha = lanchas.find(function (l) { return l.id === opciones.lanchaId; });
-    var hotel  = opciones.hotelId ? hoteles.find(function (h) { return h.id === opciones.hotelId; }) : null;
     var temporada = obtenerTemporada(opciones.fecha);
 
-    var precioTour = calcularPrecioTour(tour, opciones.adultos, opciones.ninos);
-    var gasolina   = calcularGasolina(tour, lancha);
-    var costoHotel = hotel ? hotel.precioNoche * (opciones.noches || 0) : 0;
+    var adultos = opciones.adultos || 0;
+    var ninos   = opciones.ninos || 0;
+    var bebes   = opciones.bebes || 0;
+    var personas = adultos + ninos;
 
-    var subtotal = precioTour + gasolina + costoHotel;
-    var total    = Math.round(subtotal * temporada.multiplicador);
+    var lugares = tour.lugares || 1;
+    var tarifaPersona = tarifaPorPersona(personas) + (lugares - 1) * RECARGO_POR_LUGAR;
+    var basePersonas = personas * tarifaPersona;
+
+    var total = Math.round(basePersonas * temporada.multiplicador);
 
     return {
-        tour: tour, lancha: lancha, hotel: hotel, temporada: temporada,
+        tour: tour, lancha: lancha, temporada: temporada,
         desglose: {
-            precioTour: precioTour, gasolina: gasolina, costoHotel: costoHotel,
-            subtotal: subtotal, multiplicador: temporada.multiplicador, total: total
+            lugares: lugares,
+            tarifaPersona: tarifaPersona,
+            personas: personas,
+            basePersonas: basePersonas,
+            bebes: bebes,
+            multiplicador: temporada.multiplicador, total: total
         }
     };
+}
+
+function pasajerosDeReserva(adultos, ninos, bebes) {
+    return (adultos || 0) + (ninos || 0) + (bebes || 0);
+}
+
+function textoPersonas(adultos, ninos, bebes) {
+    var t = adultos + (adultos === 1 ? ' adulto' : ' adultos');
+    if (ninos > 0) t += ', ' + ninos + (ninos === 1 ? ' niño' : ' niños');
+    if (bebes > 0) t += ', ' + bebes + (bebes === 1 ? ' infante' : ' infantes') + ' (0-3)';
+    return t;
 }
 
 /* 9. UTILIDADES */
@@ -395,6 +431,14 @@ function destinoDeTour(tourId) {
 function lancheroDeLancha(lanchaId) {
     var lancha = lanchas.find(function (l) { return l.id === lanchaId; });
     return lancha ? lancheros.find(function (p) { return p.id === lancha.lancheroId; }) : null;
+}
+/* Teléfono del lanchero a partir del nombre de la lancha
+   (para facturas de reservas hechas en este navegador). */
+function telefonoDeLanchaNombre(nombre) {
+    var lancha = lanchas.find(function (l) { return l.nombre === nombre; });
+    if (!lancha) return '';
+    var lanchero = lancheros.find(function (p) { return p.id === lancha.lancheroId; });
+    return lanchero ? lanchero.telefono : '';
 }
 function Q(numero) {
     return "Q" + Number(numero).toLocaleString("es-GT");

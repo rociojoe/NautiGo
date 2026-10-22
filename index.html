@@ -27,10 +27,8 @@
                 <ul>
                     <li><a href="#" id="link-inicio" class="active">Inicio</a></li>
                     <li><a href="#" id="link-destino">Destino</a></li>
-                    <li><a href="#">Precio</a></li>
-                    <li><a href="#">Reserva</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#" id="link-blog">Blog</a></li>
+                    <li><a href="#" id="link-contacto">Contacto</a></li>
                     <li><a href="#" id="link-mis-reservas">Mis reservas</a></li>
                     <li id="header-usuario"></li>
                 </ul>
@@ -171,27 +169,20 @@
                         <div class="detalle-col"><h3>Incluye</h3><ul id="detalle-incluye"></ul></div>
                         <div class="detalle-col"><h3>No incluye</h3><ul id="detalle-no-incluye"></ul></div>
                     </div>
-                    <h2 class="detalle-subtitulo">Hoteles cercanos</h2>
-                    <div id="detalle-hoteles" class="detalle-hoteles"></div>
                 </div>
                 <aside class="detalle-panel">
                     <h3>Calcula tu viaje</h3>
-                    <label class="campo"><span>Fecha</span><input type="date" id="detalle-fecha"></label>
+                    <div class="campo-doble">
+                        <label class="campo"><span>Fecha de ida</span><input type="date" id="detalle-fecha"></label>
+                        <label class="campo"><span>Fecha de regreso</span><input type="date" id="detalle-regreso"></label>
+                    </div>
                     <div class="campo-doble">
                         <label class="campo"><span>Adultos</span><input type="number" id="detalle-adultos" min="1" max="12" value="2"></label>
-                        <label class="campo"><span>Niños</span><input type="number" id="detalle-ninos" min="0" max="12" value="0"></label>
+                        <label class="campo"><span>Niños (4 a 11)</span><input type="number" id="detalle-ninos" min="0" max="12" value="0"></label>
+                        <label class="campo"><span>Infantes (0 a 3)</span><input type="number" id="detalle-bebes" min="0" max="12" value="0"></label>
                     </div>
                     <label class="campo"><span>Lancha</span><select id="detalle-lancha"></select></label>
-                    <label class="campo checkbox-campo"><input type="checkbox" id="detalle-con-hotel"><span>Agregar hotel</span></label>
-                    <div id="detalle-hotel-selector" class="oculto">
-                        <label class="campo"><span>Hotel</span><select id="detalle-hotel"></select></label>
-                        <label class="campo"><span>Noches</span><input type="number" id="detalle-noches" min="1" max="30" value="1"></label>
-                    </div>
                     <div class="detalle-desglose" id="detalle-desglose"></div>
-                    <p id="detalle-sin-tour" class="detalle-sin-tour oculto">
-                        Este destino todavía no tiene precio de tour cargado.
-                        Escríbenos y te confirmamos el costo de la lancha.
-                    </p>
                     <button class="btn-cta detalle-btn-reservar" id="detalle-btn-reservar">Reservar ahora</button>
                     <p id="detalle-temporada-info" class="detalle-temporada-info"></p>
                 </aside>
@@ -407,7 +398,7 @@
         <div class="container">
             <button class="btn-volver" onclick="mostrarInicio()">← Volver al inicio</button>
             <h1 class="panel-titulo">Panel de Administración</h1>
-            <p class="panel-sub">Gestiona lancheros, hoteles y reservas</p>
+            <p class="panel-sub">Gestiona lancheros, hoteles, reservas y mensajes</p>
 
             <h2 class="panel-seccion">Lancheros</h2>
             <div id="admin-lancheros" class="panel-lista"></div>
@@ -452,9 +443,99 @@
 
             <h2 class="panel-seccion">Todas las reservas</h2>
             <div id="admin-reservas" class="panel-lista"></div>
+
+            <h2 class="panel-seccion">Mensajes de contacto</h2>
+            <div id="admin-mensajes" class="panel-lista"></div>
         </div>
     </section>
 </main>
+    <!-- VISTA: BLOG -->
+    <main id="vista-blog" class="oculto">
+        <section class="blog-area">
+            <div class="mar-hero"></div>
+            <div class="container">
+                <h1 class="panel-titulo">Blog de experiencias</h1>
+                <p class="panel-sub">Historias del Caribe contadas por quienes las vivieron.</p>
+
+                <div class="blog-layout">
+                    <div class="blog-principal">
+                        <div id="blog-compositor"></div>
+                        <div id="blog-aviso"></div>
+                        <div id="blog-feed" class="blog-feed"></div>
+                    </div>
+                    <aside class="blog-lateral">
+                        <div class="blog-perfiles-caja">
+                            <h3>Perfiles</h3>
+                            <div class="busca-caja">
+                                <input type="search" id="blog-buscar-perfil" placeholder="Buscar perfiles" aria-label="Buscar perfiles">
+                            </div>
+                            <div id="blog-perfiles-lista" class="blog-perfiles-lista"></div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- VISTA: PERFIL -->
+    <main id="vista-perfil" class="oculto">
+        <section class="blog-area">
+            <div class="mar-hero"></div>
+            <div class="container">
+                <button id="perfil-volver" class="btn-volver">← Volver al blog</button>
+                <div id="perfil-cabecera"></div>
+                <h2 class="panel-seccion" id="perfil-titulo-pub">Sus publicaciones</h2>
+                <div id="perfil-publicaciones" class="blog-feed"></div>
+
+                <div id="perfil-mio-zona" class="oculto">
+                    <div id="perfil-frecuencia"></div>
+                    <h2 class="panel-seccion">Mis reservas</h2>
+                    <div id="perfil-reservas-lista" class="mis-reservas-lista"></div>
+                    <p id="perfil-reservas-vacio" class="panel-vacio oculto">Todavía no tienes reservas. <a href="#" id="perfil-ir-destinos">Explora los destinos</a> para agendar tu próximo viaje.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- VISTA: CONTACTO -->
+    <main id="vista-contacto" class="oculto">
+        <section class="contacto-area">
+            <div class="mar-hero"></div>
+            <div class="container">
+                <h1 class="panel-titulo">Contacto</h1>
+                <p class="panel-sub">Cuéntanos qué necesitas y te respondemos lo antes posible.</p>
+
+                <div class="contacto-layout">
+                    <div class="contacto-info">
+                        <div class="contacto-dato">
+                            <h3>Muelle de salida</h3>
+                            <p>Calle principal, Livingston, Izabal.<br>Guatemala.</p>
+                        </div>
+                        <div class="contacto-dato">
+                            <h3>Teléfono y correo</h3>
+                            <p>5555-0000</p>
+                            <p>hola@nautigo.com</p>
+                        </div>
+                        <div class="contacto-dato">
+                            <h3>Horario</h3>
+                            <p>Lunes a domingo<br>6:00 — 18:00</p>
+                        </div>
+                    </div>
+                    <form id="form-contacto" class="contacto-form" novalidate>
+                        <h3>Escríbenos</h3>
+                        <div class="campo"><label for="contacto-nombre">Nombre completo *</label><input type="text" id="contacto-nombre" required placeholder="Ej: Ana García"></div>
+                        <div class="campo"><label for="contacto-email">Correo electrónico *</label><input type="email" id="contacto-email" required placeholder="ana@correo.com"></div>
+                        <div class="campo"><label for="contacto-asunto">Asunto (opcional)</label><input type="text" id="contacto-asunto" placeholder="Ej: Paseo privado para grupo"></div>
+                        <div class="campo"><label for="contacto-mensaje">Mensaje *</label><textarea id="contacto-mensaje" rows="5" required placeholder="Cuéntanos fechas, número de personas y qué te gustaría visitar."></textarea></div>
+                        <div id="contacto-error" class="form-error oculto"></div>
+                        <div id="contacto-exito" class="form-exito oculto"></div>
+                        <button type="submit" class="btn-cta contacto-btn-enviar">Enviar mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
@@ -467,6 +548,7 @@
     <script src="datos.js"></script>
     <script src="auth.js"></script>
     <script src="auth-ui.js"></script>
+    <script src="blog.js"></script>
     <script>
         /* NAVEGACIÓN */
         var vistaInicio      = document.getElementById('vista-inicio');
@@ -477,6 +559,8 @@
         var vistaMisReservas = document.getElementById('vista-mis-reservas');
         var linkInicio       = document.getElementById('link-inicio');
         var linkDestino      = document.getElementById('link-destino');
+        var linkBlog         = document.getElementById('link-blog');
+        var linkContacto     = document.getElementById('link-contacto');
 
         function ocultarTodas() {
     vistaInicio.classList.add('oculto');
@@ -489,14 +573,23 @@
     document.getElementById('vista-registro').classList.add('oculto');
     document.getElementById('vista-panel-lanchero').classList.add('oculto');
     document.getElementById('vista-panel-admin').classList.add('oculto');
+    document.getElementById('vista-blog').classList.add('oculto');
+    document.getElementById('vista-perfil').classList.add('oculto');
+    document.getElementById('vista-contacto').classList.add('oculto');
 }
+
+        function activarLink(link) {
+            [linkInicio, linkDestino, linkBlog, linkContacto].forEach(function (l) {
+                if (l) l.classList.remove('active');
+            });
+            if (link) link.classList.add('active');
+        }
 
         function mostrarInicio(e) {
             if (e) e.preventDefault();
             ocultarTodas();
             vistaInicio.classList.remove('oculto');
-            linkInicio.classList.add('active');
-            linkDestino.classList.remove('active');
+            activarLink(linkInicio);
             window.scrollTo(0, 0);
         }
 
@@ -504,13 +597,14 @@
             if (e) e.preventDefault();
             ocultarTodas();
             vistaDestinos.classList.remove('oculto');
-            linkDestino.classList.add('active');
-            linkInicio.classList.remove('active');
+            activarLink(linkDestino);
             window.scrollTo(0, 0);
         }
 
         linkInicio.addEventListener('click', mostrarInicio);
         linkDestino.addEventListener('click', mostrarDestinos);
+        linkBlog.addEventListener('click', function (e) { e.preventDefault(); abrirBlog(); });
+        linkContacto.addEventListener('click', function (e) { e.preventDefault(); abrirContacto(); });
 
         /* LUGARES */
         var lugaresGrid = document.getElementById('lugares-grid');
@@ -521,10 +615,6 @@
 
         function normalizar(txt) {
             return String(txt || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-        }
-
-        function destinoTieneTour(destinoId) {
-            return !!tourDeDestino(destinoId);
         }
 
         function destinosFiltrados() {
@@ -585,12 +675,21 @@
                            esc(CATEGORIAS[c] || c) + '</span>';
                 }).join('') + (ocultas > 0 ? '<span class="cat-chip cat-chip-mas">+' + ocultas + '</span>' : '');
 
+                var tourLugar = tourDeDestino(lugar.id);
+                var extraLugares = tourLugar ? Math.max(0, (tourLugar.lugares || 1) - 1) * RECARGO_POR_LUGAR : 0;
+                var precioMin = tarifaPorPersona(11) + extraLugares;
+                var precioMax = tarifaPorPersona(10) + extraLugares;
+                var precioChip = tourLugar
+                    ? '<span class="lugar-precio">' + Q(precioMin) + '–' + Q(precioMax).slice(1) +
+                      ' <small>por persona</small></span>'
+                    : '';
+
                 card.innerHTML =
                     '<div class="card-image' + (lugar.imagen ? '' : ' sin-foto') + '">' + foto + '</div>' +
                     '<div class="card-content">' +
                         '<div class="lugar-cab">' +
                             '<span class="lugar-tipo">' + esc(CATEGORIAS[lugar.tipo] || lugar.tipo) + '</span>' +
-                            (destinoTieneTour(lugar.id) ? '' : '<span class="lugar-aviso">Precio por confirmar</span>') +
+                            precioChip +
                         '</div>' +
                         '<h3>' + esc(lugar.nombre) + '</h3>' +
                         '<p>' + esc(lugar.descripcionCorta) + '</p>' +
@@ -766,24 +865,13 @@
             destino.incluye.forEach(function (i) { var li = document.createElement('li'); li.textContent = i; ulIncluye.appendChild(li); });
             destino.noIncluye.forEach(function (i) { var li = document.createElement('li'); li.textContent = i; ulNo.appendChild(li); });
 
-            var contHoteles = document.getElementById('detalle-hoteles');
-            contHoteles.innerHTML = '';
-            hoteles.forEach(function (h) {
-                var estrellas = '★'.repeat(h.estrellas) + '☆'.repeat(5 - h.estrellas);
-                var div = document.createElement('div');
-                div.className = 'hotel-mini';
-                div.innerHTML =
-                    '<span class="categoria">' + h.categoria + '</span>' +
-                    '<h4>' + h.nombre + '</h4>' +
-                    '<div class="estrellas">' + estrellas + '</div>' +
-                    '<div class="precio">' + Q(h.precioNoche) + ' <small>/noche</small></div>';
-                contHoteles.appendChild(div);
-            });
-
             document.getElementById('detalle-fecha').value = hoyISO();
             document.getElementById('detalle-fecha').min = hoyISO();
+            document.getElementById('detalle-regreso').value = hoyISO();
+            document.getElementById('detalle-regreso').min = hoyISO();
             document.getElementById('detalle-adultos').value = tour ? Math.max(tour.minPersonas || 1, 2) : 2;
             document.getElementById('detalle-ninos').value = 0;
+            document.getElementById('detalle-bebes').value = 0;
 
             var selectLancha = document.getElementById('detalle-lancha');
             selectLancha.innerHTML = '';
@@ -795,22 +883,7 @@
                 selectLancha.appendChild(opt);
             });
 
-            var selectHotel = document.getElementById('detalle-hotel');
-            selectHotel.innerHTML = '';
-            hoteles.forEach(function (h) {
-                var opt = document.createElement('option');
-                opt.value = h.id;
-                opt.textContent = h.nombre + ' — ' + Q(h.precioNoche) + '/noche';
-                selectHotel.appendChild(opt);
-            });
-
-            document.getElementById('detalle-con-hotel').checked = false;
-            document.getElementById('detalle-hotel-selector').classList.add('oculto');
-            document.getElementById('detalle-noches').value = 1;
-
-            var panel = document.querySelector('.detalle-panel');
-            panel.classList.toggle('sin-tour', !tour);
-            document.getElementById('detalle-sin-tour').classList.toggle('oculto', !!tour);
+            ajustarAforo();
 
             actualizarDesglose();
 
@@ -826,37 +899,36 @@
             var fecha = document.getElementById('detalle-fecha').value || hoyISO();
             var adultos = parseInt(document.getElementById('detalle-adultos').value, 10) || 1;
             var ninos = parseInt(document.getElementById('detalle-ninos').value, 10) || 0;
+            var bebes = parseInt(document.getElementById('detalle-bebes').value, 10) || 0;
             var lanchaId = document.getElementById('detalle-lancha').value;
-            var conHotel = document.getElementById('detalle-con-hotel').checked;
-            var hotelId = conHotel ? document.getElementById('detalle-hotel').value : null;
-            var noches = conHotel ? (parseInt(document.getElementById('detalle-noches').value, 10) || 1) : 0;
 
             var resultado = calcularPrecioReserva({
                 tourId: tour.id, lanchaId: lanchaId, fecha: fecha,
-                adultos: adultos, ninos: ninos, hotelId: hotelId, noches: noches
+                adultos: adultos, ninos: ninos, bebes: bebes
             });
 
             var d = resultado.desglose;
             var html = '';
 
-            if (tour.tipoPrecio === 'persona') {
-                html += '<div class="desglose-linea"><span>' + adultos + ' adulto(s) × ' + Q(tour.precioAdulto) + '</span><span>' + Q(tour.precioAdulto * adultos) + '</span></div>';
-                if (ninos > 0) {
-                    html += '<div class="desglose-linea"><span>' + ninos + ' niño(s) × ' + Q(tour.precioNino) + '</span><span>' + Q(tour.precioNino * ninos) + '</span></div>';
-                }
-            } else {
-                html += '<div class="desglose-linea"><span>Lancha completa</span><span>' + Q(tour.precioLancha) + '</span></div>';
+            html += '<div class="desglose-linea"><span>' + d.personas + ' persona' + (d.personas === 1 ? '' : 's') + ' × ' + Q(d.tarifaPersona) + '</span><span>' + Q(d.basePersonas) + '</span></div>';
+            if (d.lugares > 1) {
+                html += '<div class="desglose-linea desglose-nota"><span>Tour de ' + d.lugares + ' lugares (+' + Q(RECARGO_POR_LUGAR) + ' por lugar extra)</span><span>—</span></div>';
+            }
+            if (bebes > 0) {
+                html += '<div class="desglose-linea desglose-nota"><span>' + bebes + ' infante(s) 0-3, en brazos</span><span>Sin costo</span></div>';
             }
 
-            html += '<div class="desglose-linea"><span>Gasolina</span><span>' + Q(d.gasolina) + '</span></div>';
-
-            if (d.costoHotel > 0) {
-                html += '<div class="desglose-linea"><span>Hotel (' + noches + ' noche' + (noches > 1 ? 's' : '') + ')</span><span>' + Q(d.costoHotel) + '</span></div>';
-            }
             if (d.multiplicador !== 1) {
-                html += '<div class="desglose-linea"><span>Temporada (' + resultado.temporada.nombre + ' ×' + d.multiplicador + ')</span><span>' + Q(d.total - d.subtotal) + '</span></div>';
+                var deltaTemp = d.total - d.basePersonas;
+                var deltaTxt = deltaTemp < 0 ? '−' + Q(Math.abs(deltaTemp)) : Q(deltaTemp);
+                html += '<div class="desglose-linea"><span>Temporada (' + resultado.temporada.nombre + ' ×' + d.multiplicador + ')</span><span>' + deltaTxt + '</span></div>';
             }
             html += '<div class="desglose-linea desglose-total"><span>Total</span><span>' + Q(d.total) + '</span></div>';
+
+            var ocupacion = pasajerosDeReserva(adultos, ninos, bebes);
+            if (resultado.lancha && ocupacion > resultado.lancha.capacidad) {
+                html += '<div class="desglose-aviso">' + resultado.lancha.nombre + ' tiene aforo para ' + resultado.lancha.capacidad + ' y los infantes cuentan. Ajusta las personas o cambia de lancha.</div>';
+            }
             document.getElementById('detalle-desglose').innerHTML = html;
 
             var info = document.getElementById('detalle-temporada-info');
@@ -864,21 +936,53 @@
             info.className = 'detalle-temporada-info' + (resultado.temporada.id === 'alta' ? ' alta' : '');
         }
 
-        ['detalle-fecha','detalle-adultos','detalle-ninos','detalle-lancha','detalle-hotel','detalle-noches'].forEach(function (id) {
+        /* Aforo estricto: adultos + niños + infantes nunca superan
+           la capacidad de la lancha elegida (los infantes cuentan). */
+        function ajustarAforo() {
+            var lanchaSel = lanchas.find(function (l) { return l.id === document.getElementById('detalle-lancha').value; });
+            if (!lanchaSel) return;
+            var ids = ['detalle-adultos', 'detalle-ninos', 'detalle-bebes'];
+            var v = {};
+            ids.forEach(function (id) { v[id] = parseInt(document.getElementById(id).value, 10) || 0; });
+            var sobra = lanchaSel.capacidad - (v['detalle-adultos'] + v['detalle-ninos'] + v['detalle-bebes']);
+            if (sobra < 0) {
+                ['detalle-bebes', 'detalle-ninos', 'detalle-adultos'].forEach(function (id) {
+                    if (sobra >= 0) return;
+                    var min = id === 'detalle-adultos' ? 1 : 0;
+                    var nuevo = Math.max(min, v[id] + sobra);
+                    sobra += v[id] - nuevo;
+                    v[id] = nuevo;
+                    document.getElementById(id).value = nuevo;
+                });
+            }
+            ids.forEach(function (id) {
+                var el = document.getElementById(id);
+                var otros = (v['detalle-adultos'] + v['detalle-ninos'] + v['detalle-bebes']) - v[id];
+                el.max = Math.max(id === 'detalle-adultos' ? 1 : 0, lanchaSel.capacidad - otros);
+            });
+        }
+
+        ['detalle-fecha', 'detalle-regreso'].forEach(function (id) {
             var el = document.getElementById(id);
-            if (el) { el.addEventListener('input', actualizarDesglose); el.addEventListener('change', actualizarDesglose); }
+            el.addEventListener('change', function () {
+                var fecha = document.getElementById('detalle-fecha');
+                var regreso = document.getElementById('detalle-regreso');
+                regreso.min = fecha.value || hoyISO();
+                if (regreso.value && regreso.value < regreso.min) regreso.value = regreso.min;
+                actualizarDesglose();
+            });
         });
 
-        document.getElementById('detalle-con-hotel').addEventListener('change', function () {
-            document.getElementById('detalle-hotel-selector').classList.toggle('oculto', !this.checked);
-            actualizarDesglose();
+        ['detalle-adultos', 'detalle-ninos', 'detalle-bebes', 'detalle-lancha'].forEach(function (id) {
+            var el = document.getElementById(id);
+            el.addEventListener('input', function () { ajustarAforo(); actualizarDesglose(); });
+            el.addEventListener('change', function () { ajustarAforo(); actualizarDesglose(); });
         });
 
         document.getElementById('btn-volver').addEventListener('click', function () {
             ocultarTodas();
             vistaDestinos.classList.remove('oculto');
-            linkDestino.classList.add('active');
-            linkInicio.classList.remove('active');
+            activarLink(linkDestino);
             window.scrollTo(0, 0);
         });
 
@@ -897,37 +1001,39 @@
             }
         });
 
-        /* RESERVAS */
+        /* RESERVAS — la reserva vive en el servidor; localStorage es solo
+           la copia de cortesía para quienes reservan sin cuenta. */
         var RESERVAS_KEY = 'nautigo_reservas';
 
-        function leerReservas() {
+        function leerReservasLocales() {
             try { var d = localStorage.getItem(RESERVAS_KEY); return d ? JSON.parse(d) : []; }
             catch (e) { return []; }
         }
-        function guardarReservas(lista) { localStorage.setItem(RESERVAS_KEY, JSON.stringify(lista)); }
-        function agregarReserva(r) { var l = leerReservas(); l.unshift(r); guardarReservas(l); }
-        function actualizarEstadoReserva(codigo, estado) {
-            var l = leerReservas();
+        function guardarReservasLocales(lista) { localStorage.setItem(RESERVAS_KEY, JSON.stringify(lista)); }
+        function agregarReservaLocal(r) { var l = leerReservasLocales(); l.unshift(r); guardarReservasLocales(l); }
+        function actualizarEstadoReservaLocal(codigo, estado) {
+            var l = leerReservasLocales();
             var i = l.findIndex(function (r) { return r.codigo === codigo; });
-            if (i >= 0) { l[i].estado = estado; guardarReservas(l); }
-            return i >= 0;
+            if (i >= 0) { l[i].estado = estado; guardarReservasLocales(l); }
         }
-        function eliminarReserva(codigo) {
-            var l = leerReservas();
-            l = l.filter(function (r) { return r.codigo !== codigo; });
-            guardarReservas(l);
+        function eliminarReservaLocal(codigo) {
+            guardarReservasLocales(leerReservasLocales().filter(function (r) { return r.codigo !== codigo; }));
         }
-        function generarCodigo() {
-            var year = new Date().getFullYear();
-            var lista = leerReservas();
-            var num = lista.length + 1;
-            var codigo;
-            do {
-                codigo = 'NGO-' + year + '-' + String(num).padStart(4, '0');
-                num++;
-            } while (lista.some(function (r) { return r.codigo === codigo; }));
-            return codigo;
+
+        /* Descuento frecuente: cada 4 viajes completados el
+           siguiente sale con 20%. El servidor lo confirma al crear. */
+        var ESTADO_FREC = null;
+        function consultarFrecuencia() {
+            if (!estaLogueado() || SESION.rol !== 'cliente') {
+                ESTADO_FREC = null;
+                return Promise.resolve(null);
+            }
+            return api('api/frecuente.php').then(function (j) {
+                ESTADO_FREC = j.ok ? j : null;
+                return ESTADO_FREC;
+            });
         }
+        document.addEventListener('sesion-cambiada', consultarFrecuencia);
 
         function abrirFormulario() {
             if (!detalleActualId) return;
@@ -935,16 +1041,24 @@
             if (!tour) return;
 
             var fecha = document.getElementById('detalle-fecha').value;
+            var regreso = document.getElementById('detalle-regreso').value || fecha;
             var adultos = parseInt(document.getElementById('detalle-adultos').value, 10) || 1;
             var ninos = parseInt(document.getElementById('detalle-ninos').value, 10) || 0;
+            var bebes = parseInt(document.getElementById('detalle-bebes').value, 10) || 0;
             var lanchaId = document.getElementById('detalle-lancha').value;
-            var conHotel = document.getElementById('detalle-con-hotel').checked;
-            var hotelId = conHotel ? document.getElementById('detalle-hotel').value : null;
-            var noches = conHotel ? (parseInt(document.getElementById('detalle-noches').value, 10) || 1) : 0;
+
+            var lanchaSel = lanchas.find(function (l) { return l.id === lanchaId; });
+            if (lanchaSel && pasajerosDeReserva(adultos, ninos, bebes) > lanchaSel.capacidad) {
+                ajustarAforo();
+                actualizarDesglose();
+                var aviso = document.querySelector('#detalle-desglose .desglose-aviso');
+                if (aviso) aviso.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
 
             var resultado = calcularPrecioReserva({
                 tourId: tour.id, lanchaId: lanchaId, fecha: fecha,
-                adultos: adultos, ninos: ninos, hotelId: hotelId, noches: noches
+                adultos: adultos, ninos: ninos, bebes: bebes
             });
 
             var destino = destinos.find(function (d) { return d.id === detalleActualId; });
@@ -954,30 +1068,39 @@
                 destinoId: detalleActualId, destinoNombre: destino.nombre,
                 tourId: tour.id, tourNombre: tour.nombre,
                 lanchaId: lanchaId, lanchaNombre: resultado.lancha.nombre, lancheroNombre: lanchero.nombre,
-                fecha: fecha, adultos: adultos, ninos: ninos,
-                hotelId: hotelId, hotelNombre: resultado.hotel ? resultado.hotel.nombre : null, noches: noches,
+                lancheroTelefono: lanchero.telefono || '',
+                fecha: fecha, fechaRegreso: regreso,
+                adultos: adultos, ninos: ninos, bebes: bebes,
                 desglose: resultado.desglose, temporada: resultado.temporada
             };
 
             var html = '';
             html += '<div class="resumen-item"><span>Destino</span><strong>' + destino.nombre + '</strong></div>';
             html += '<div class="resumen-item"><span>Tour</span><strong>' + tour.nombre + '</strong></div>';
-            html += '<div class="resumen-item"><span>Fecha</span><strong>' + fecha + '</strong></div>';
+            html += '<div class="resumen-item"><span>Fechas</span><strong>Ida ' + fecha + (regreso !== fecha ? ' · Regreso ' + regreso : ' (mismo día)') + '</strong></div>';
             html += '<div class="resumen-item"><span>Lancha</span><strong>' + resultado.lancha.nombre + '</strong></div>';
             html += '<div class="resumen-item"><span>Lanchero</span><strong>' + lanchero.nombre + '</strong></div>';
-            html += '<div class="resumen-item"><span>Personas</span><strong>' + adultos + ' adulto(s), ' + ninos + ' niño(s)</strong></div>';
-            if (hotelId) {
-                html += '<div class="resumen-item"><span>Hotel</span><strong>' + resultado.hotel.nombre + ' (' + noches + ' noche' + (noches > 1 ? 's' : '') + ')</strong></div>';
-            }
-            html += '<div class="resumen-item total"><span>Total</span><span>' + Q(reservaEnProceso.desglose.total) + '</span></div>';
-            document.getElementById('form-resumen-contenido').innerHTML = html;
+            html += '<div class="resumen-item"><span>Personas</span><strong>' + textoPersonas(adultos, ninos, bebes) + '</strong></div>';
+            consultarFrecuencia().then(function (frec) {
+                var totalVista = reservaEnProceso.desglose.total;
+                if (frec && frec.descuentoDisponible) {
+                    totalVista = Math.round(totalVista * 0.8);
+                    html += '<div class="resumen-item descuento"><span>Descuento frecuente (4 viajes completados)</span><strong>−20%</strong></div>';
+                }
+                html += '<div class="resumen-item total"><span>Total</span><span>' + Q(totalVista) + '</span></div>';
+                document.getElementById('form-resumen-contenido').innerHTML = html;
 
-            document.getElementById('form-reserva').reset();
-            document.getElementById('form-error').classList.add('oculto');
+                document.getElementById('form-reserva').reset();
+                if (SESION && SESION.rol === 'cliente') {
+                    document.getElementById('form-nombre').value = SESION.nombre;
+                    document.getElementById('form-email').value = SESION.email;
+                }
+                document.getElementById('form-error').classList.add('oculto');
 
-            ocultarTodas();
-            vistaFormulario.classList.remove('oculto');
-            window.scrollTo(0, 0);
+                ocultarTodas();
+                vistaFormulario.classList.remove('oculto');
+                window.scrollTo(0, 0);
+            });
         }
 
         document.getElementById('detalle-btn-reservar').addEventListener('click', abrirFormulario);
@@ -985,52 +1108,85 @@
         document.getElementById('form-reserva').addEventListener('submit', function (e) {
             e.preventDefault();
             var nombre = document.getElementById('form-nombre').value.trim();
-            var email = document.getElementById('form-email').value.trim();
+            var email = document.getElementById('form-email').value.trim().toLowerCase();
             var telefono = document.getElementById('form-telefono').value.trim();
             var notas = document.getElementById('form-notas').value.trim();
             var error = document.getElementById('form-error');
+            var boton = this.querySelector('button[type="submit"]');
 
             if (!nombre || nombre.length < 3) { error.textContent = 'Por favor escribe tu nombre completo.'; error.classList.remove('oculto'); return; }
             if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { error.textContent = 'Por favor escribe un correo válido.'; error.classList.remove('oculto'); return; }
             if (!telefono || telefono.length < 7) { error.textContent = 'Por favor escribe un teléfono válido.'; error.classList.remove('oculto'); return; }
 
-            var codigo = generarCodigo();
-            var reserva = {
-                codigo: codigo,
-                creadaEn: new Date().toISOString(),
-                estado: 'pendiente',
-                cliente: { nombre: nombre, email: email, telefono: telefono },
-                notas: notas,
-                destinoId: reservaEnProceso.destinoId, destinoNombre: reservaEnProceso.destinoNombre,
-                tourId: reservaEnProceso.tourId, tourNombre: reservaEnProceso.tourNombre,
-                lanchaId: reservaEnProceso.lanchaId, lanchaNombre: reservaEnProceso.lanchaNombre,
+            error.classList.add('oculto');
+            boton.disabled = true;
+
+            var datos = {
+                destinoSlug: reservaEnProceso.destinoId,
+                tourId: reservaEnProceso.tourId,
+                fecha: reservaEnProceso.fecha,
+                fechaRegreso: reservaEnProceso.fechaRegreso || '',
+                adultos: reservaEnProceso.adultos,
+                ninos: reservaEnProceso.ninos,
+                bebes: reservaEnProceso.bebes,
+                lanchaNombre: reservaEnProceso.lanchaNombre,
                 lancheroNombre: reservaEnProceso.lancheroNombre,
-                fecha: reservaEnProceso.fecha, adultos: reservaEnProceso.adultos, ninos: reservaEnProceso.ninos,
-                hotelId: reservaEnProceso.hotelId, hotelNombre: reservaEnProceso.hotelNombre, noches: reservaEnProceso.noches,
-                desglose: reservaEnProceso.desglose, temporada: reservaEnProceso.temporada
+                lancheroTelefono: reservaEnProceso.lancheroTelefono || '',
+                clienteNombre: nombre,
+                clienteEmail: email,
+                clienteTelefono: telefono,
+                notas: notas,
+                total: reservaEnProceso.desglose.total,
+                desglose: JSON.stringify(reservaEnProceso.desglose)
             };
-            agregarReserva(reserva);
-            // Sumar puntos si hay sesión de cliente
-            var sesion = leerSesion();
-            if (sesion && sesion.rol === 'cliente') {
-                var puntosGanados = calcularPuntosGanados(reserva.desglose.total);
-                agregarPuntos(puntosGanados);
-                reserva.puntosGanados = puntosGanados;
-            }
-            mostrarConfirmacion(reserva);
+
+            api('api/reserva_crear.php', datos).then(function (j) {
+                boton.disabled = false;
+                if (!j.ok) {
+                    error.textContent = j.error;
+                    error.classList.remove('oculto');
+                    return;
+                }
+
+                var reserva = Object.assign({}, reservaEnProceso, {
+                    codigo: j.codigo,
+                    creadaEn: new Date().toISOString(),
+                    estado: 'pendiente',
+                    cliente: { nombre: nombre, email: email, telefono: telefono },
+                    notas: notas,
+                    desglose: Object.assign({}, reservaEnProceso.desglose, {
+                        total: j.totalFinal,
+                        descuentoFrecuente: !!j.descuentoAplicado
+                    })
+                });
+
+                /* Sin cuenta: copia local para que el historial no dependa del servidor */
+                if (!estaLogueado()) agregarReservaLocal(reserva);
+
+                if (j.puntos !== null && SESION && SESION.rol === 'cliente') {
+                    SESION.puntos = j.puntos;
+                    actualizarUIUsuario();
+                }
+                consultarFrecuencia();
+
+                mostrarConfirmacion(reserva, j.puntosGanados, j.descuentoAplicado);
+            });
         });
 
-        function mostrarConfirmacion(reserva) {
+        function mostrarConfirmacion(reserva, puntosGanados, descuentoAplicado) {
             document.getElementById('confirmacion-codigo').textContent = reserva.codigo;
             var html = '';
             html += '<div class="resumen-item"><span>Destino</span><strong>' + reserva.destinoNombre + '</strong></div>';
-            html += '<div class="resumen-item"><span>Fecha</span><strong>' + reserva.fecha + '</strong></div>';
+            html += '<div class="resumen-item"><span>Fechas</span><strong>Ida ' + reserva.fecha + (reserva.fechaRegreso && reserva.fechaRegreso !== reserva.fecha ? ' · Regreso ' + reserva.fechaRegreso : ' (mismo día)') + '</strong></div>';
             html += '<div class="resumen-item"><span>Lancha</span><strong>' + reserva.lanchaNombre + ' — ' + reserva.lancheroNombre + '</strong></div>';
-            html += '<div class="resumen-item"><span>Personas</span><strong>' + reserva.adultos + ' adulto(s), ' + reserva.ninos + ' niño(s)</strong></div>';
-            if (reserva.hotelNombre) {
-                html += '<div class="resumen-item"><span>Hotel</span><strong>' + reserva.hotelNombre + ' (' + reserva.noches + ' noche' + (reserva.noches > 1 ? 's' : '') + ')</strong></div>';
+            html += '<div class="resumen-item"><span>Personas</span><strong>' + textoPersonas(reserva.adultos, reserva.ninos, reserva.bebes) + '</strong></div>';
+            if (descuentoAplicado) {
+                html += '<div class="resumen-item descuento"><span>Descuento frecuente</span><strong>−20%</strong></div>';
             }
             html += '<div class="resumen-item total"><span>Total</span><span>' + Q(reserva.desglose.total) + '</span></div>';
+            if (puntosGanados > 0) {
+                html += '<div class="resumen-item"><span>Puntos ganados</span><strong>+' + puntosGanados + '</strong></div>';
+            }
             document.getElementById('confirmacion-detalle').innerHTML = html;
 
             ocultarTodas();
@@ -1038,64 +1194,224 @@
             window.scrollTo(0, 0);
         }
 
-        function abrirMisReservas() {
-            var lista = leerReservas();
-            var cont = document.getElementById('mis-reservas-lista');
-            var vacio = document.getElementById('mis-reservas-vacio');
-            cont.innerHTML = '';
+        /* Factura desplegable de cada reserva: datos del cliente,
+           lancha/lanchero con teléfono y el desglose del precio. */
+        function htmlFactura(r) {
+            var d = null;
+            try { d = r.desgloseJSON ? JSON.parse(r.desgloseJSON) : null; } catch (e) { d = null; }
+            var filas = '';
+            function fila(etiqueta, valor, clase) {
+                filas += '<div class="factura-linea' + (clase ? ' ' + clase : '') + '"><span>' + etiqueta + '</span><span>' + valor + '</span></div>';
+            }
+            if (d && d.subtotal !== undefined) {
+                /* desglose antiguo (con hotel) */
+                if ((d.baseKm || 0) > 0) {
+                    fila('Recorrido', Q(d.baseKm || 0));
+                }
+                if (d.personas !== undefined && (d.basePersonas || 0) > 0) {
+                    fila(d.personas + ' persona' + (d.personas === 1 ? '' : 's'), Q(d.basePersonas || 0));
+                }
+                if (!(d.baseKm || 0) && !(d.basePersonas || 0)) {
+                    if ((d.precioLancha || 0) > 0) fila('Lancha completa (ida y vuelta)', Q(d.precioLancha));
+                    else if ((d.precioTour || 0) > 0) fila('Tour', Q(d.precioTour));
+                    if ((d.gasolina || 0) > 0) fila('Gasolina', Q(d.gasolina));
+                }
+                if (d.costoHotel > 0) fila('Hotel (' + (r.noches || 0) + ' noches)', Q(d.costoHotel));
+                if (d.multiplicador && d.multiplicador !== 1) {
+                    var delta = d.total - d.subtotal;
+                    fila('Temporada (×' + d.multiplicador + ')', delta < 0 ? '−' + Q(Math.abs(delta)) : Q(delta));
+                }
+            } else if (d && d.tarifaPersona !== undefined) {
+                /* solo por persona */
+                fila((d.personas || 0) + ' persona' + ((d.personas || 0) === 1 ? '' : 's') + ' × ' + Q(d.tarifaPersona || 0), Q(d.basePersonas || 0));
+                if (d.lugares > 1) fila('Tour de ' + d.lugares + ' lugares', 'Incluido', 'factura-nota');
+                if (d.bebes > 0) fila(d.bebes + ' infante(s) 0-3, en brazos', 'Sin costo', 'factura-nota');
+                if (d.multiplicador && d.multiplicador !== 1) {
+                    var deltaP = (d.total || r.total) - (d.basePersonas || 0);
+                    fila('Temporada (×' + d.multiplicador + ')', deltaP < 0 ? '−' + Q(Math.abs(deltaP)) : Q(deltaP));
+                }
+                if (d.descuentoFrecuente) fila('Descuento frecuente', '−20%', 'factura-nota');
+            } else if (d) {
+                /* reservas con el cálculo anterior por kilómetros */
+                if (d.esLanchaCompleta) {
+                    fila('Lancha completa (ida y vuelta)', Q(d.precioLancha || 0));
+                } else {
+                    fila('Ida y vuelta (' + (d.distanciaKm || 0) + ' km aprox. por tramo)', Q(d.baseKm || 0));
+                    fila((d.personas || 0) + ' persona' + ((d.personas || 0) === 1 ? '' : 's'), Q(d.basePersonas || 0));
+                    if (d.bebes > 0) fila(d.bebes + ' infante(s) 0-3, en brazos', 'Sin costo', 'factura-nota');
+                }
+                if (d.multiplicador && d.multiplicador !== 1) {
+                    var deltaN = (d.total || r.total) - ((d.baseKm || 0) + (d.basePersonas || 0) + (d.precioLancha || 0));
+                    fila('Temporada (×' + d.multiplicador + ')', deltaN < 0 ? '−' + Q(Math.abs(deltaN)) : Q(Math.max(0, deltaN)));
+                }
+                if (d.descuentoFrecuente) fila('Descuento frecuente', '−20%', 'factura-nota');
+            }
+            var fechas = r.fecha + (r.fechaRegreso && r.fechaRegreso !== r.fecha ? ' → ' + r.fechaRegreso : '');
+            var html = '';
+            html += '<div class="factura-cab"><span class="factura-titulo">Factura</span><span class="factura-codigo">' + r.codigo + '</span></div>';
+            html += '<div class="factura-grid">' +
+                        '<div><small>Cliente</small>' + esc(r.clienteNombre || '—') + '</div>' +
+                        '<div><small>Correo</small>' + esc(r.clienteEmail || '—') + '</div>' +
+                        '<div><small>Teléfono</small>' + esc(r.clienteTelefono || '—') + '</div>' +
+                        '<div><small>Fechas</small>' + fechas + '</div>' +
+                    '</div>';
+            html += '<div class="factura-grid">' +
+                        '<div><small>Lancha</small>' + esc(r.lanchaNombre || '—') + '</div>' +
+                        '<div><small>Lanchero</small>' + esc(r.lancheroNombre || '—') + '</div>' +
+                        '<div><small>Tel. lanchero</small>' + esc(r.lancheroTelefono || '—') + '</div>' +
+                        '<div><small>Personas</small>' + textoPersonas(r.adultos, r.ninos, r.bebes) + '</div>' +
+                    '</div>';
+            html += '<div class="factura-precio">' + filas +
+                        '<div class="factura-linea factura-total"><span>Total</span><span>' + Q(r.total) + '</span></div>' +
+                    '</div>';
+            return html;
+        }
 
-            if (lista.length === 0) {
-                cont.classList.add('oculto');
-                vacio.classList.remove('oculto');
-            } else {
-                cont.classList.remove('oculto');
-                vacio.classList.add('oculto');
-                lista.forEach(function (r, i) {
-                    var card = document.createElement('div');
-                    card.className = 'reserva-card estado-' + r.estado;
-                    card.style.animationDelay = (i * 0.06) + 's';
-                    var estadoTexto = { pendiente: '⏳ Pendiente', confirmada: '✅ Confirmada', cancelada: '❌ Cancelada', completada: '🏁 Completada' }[r.estado] || r.estado;
-                    var acciones = '';
-                    if (r.estado === 'pendiente') {
-                        acciones = '<button class="cancelar" data-codigo="' + r.codigo + '">Cancelar reserva</button>';
-                    } else if (r.estado === 'cancelada') {
-                        acciones = '<button data-codigo="' + r.codigo + '" data-accion="eliminar">Eliminar del historial</button>';
-                    }
-                    card.innerHTML =
-                        '<div>' +
-                            '<div class="reserva-codigo">' + r.codigo + '</div>' +
-                            '<div class="reserva-nombre">' + r.destinoNombre + '</div>' +
-                            '<div class="reserva-fecha-lugar">📅 ' + r.fecha + ' · 👥 ' + r.adultos + ' adulto(s), ' + r.ninos + ' niño(s)</div>' +
-                        '</div>' +
-                        '<div>' +
-                            '<div class="reserva-total">' + Q(r.desglose.total) + '</div>' +
-                            '<div class="reserva-estado">' + estadoTexto + '</div>' +
-                        '</div>' +
-                        (acciones ? '<div class="reserva-acciones">' + acciones + '</div>' : '');
-                    cont.appendChild(card);
-                });
-                cont.querySelectorAll('button').forEach(function (btn) {
-                    btn.addEventListener('click', function () {
-                        var codigo = btn.getAttribute('data-codigo');
-                        var accion = btn.getAttribute('data-accion');
-                        if (accion === 'eliminar') {
-                            if (confirm('¿Eliminar esta reserva del historial?')) { eliminarReserva(codigo); abrirMisReservas(); }
-                        } else {
-                            if (confirm('¿Seguro que quieres cancelar la reserva ' + codigo + '?')) { actualizarEstadoReserva(codigo, 'cancelada'); abrirMisReservas(); }
-                        }
+        /* Carga y pinta las reservas (servidor + copias de invitado)
+           en el contenedor que se le pase: la página Mis reservas
+           o la zona de reservas dentro del propio perfil. */
+        function cargarReservasUsuario(cont, vacio, alTerminar) {
+            cont.innerHTML = '<p class="panel-vacio">Cargando…</p>';
+            vacio.classList.add('oculto');
+            cont.classList.remove('oculto');
+
+            function refrescar() { cargarReservasUsuario(cont, vacio, alTerminar); }
+
+            var pideServidor = estaLogueado();
+            var peticion = pideServidor ? api('api/reservas_mias.php')
+                                        : Promise.resolve({ ok: true, reservas: [] });
+
+            peticion.then(function (j) {
+                var lista = [];
+                if (pideServidor && j.ok) {
+                    lista = j.reservas.map(function (r) {
+                        var destino = destinos.find(function (d) { return d.id === r.destinoSlug; });
+                        return {
+                            codigo: r.codigo, estado: r.estado,
+                            destinoNombre: destino ? destino.nombre : r.destinoSlug,
+                            fecha: r.fecha, fechaRegreso: r.fechaRegreso || null,
+                            adultos: r.adultos, ninos: r.ninos, bebes: r.bebes || 0,
+                            total: r.total, clienteEmail: r.clienteEmail || '',
+                            lanchaNombre: r.lanchaNombre || '', lancheroNombre: r.lancheroNombre || '',
+                            lancheroTelefono: r.lancheroTelefono || '',
+                            clienteNombre: r.clienteNombre || '', clienteTelefono: r.clienteTelefono || '',
+                            desgloseJSON: r.desglose || null
+                        };
+                    });
+                }
+                /* las copias locales de invitado se agregan sin duplicar
+                   códigos; con sesión activa solo cuentan las del mismo correo */
+                var vistos = {};
+                lista.forEach(function (r) { vistos[r.codigo] = true; });
+                var emailSesion = (SESION && SESION.email ? SESION.email : '').toLowerCase();
+                leerReservasLocales().forEach(function (r) {
+                    if (vistos[r.codigo]) return;
+                    if (emailSesion && (r.cliente.email || '').toLowerCase() !== emailSesion) return;
+                    lista.push({
+                        codigo: r.codigo, estado: r.estado, destinoNombre: r.destinoNombre,
+                        fecha: r.fecha, fechaRegreso: r.fechaRegreso || null,
+                        adultos: r.adultos, ninos: r.ninos, bebes: r.bebes || 0,
+                        total: r.desglose.total, clienteEmail: r.cliente.email,
+                        lanchaNombre: r.lanchaNombre || '', lancheroNombre: r.lancheroNombre || '',
+                        lancheroTelefono: r.lancheroTelefono || telefonoDeLanchaNombre(r.lanchaNombre),
+                        clienteNombre: r.cliente.nombre || '', clienteTelefono: r.cliente.telefono || '',
+                        desgloseJSON: JSON.stringify(r.desglose)
                     });
                 });
-            }
-            ocultarTodas();
-            vistaMisReservas.classList.remove('oculto');
-            window.scrollTo(0, 0);
+
+                cont.innerHTML = '';
+
+                if (lista.length === 0) {
+                    cont.classList.add('oculto');
+                    vacio.classList.remove('oculto');
+                } else {
+                    cont.classList.remove('oculto');
+                    vacio.classList.add('oculto');
+                    lista.forEach(function (r, i) {
+                        var card = document.createElement('div');
+                        card.className = 'reserva-card estado-' + r.estado;
+                        card.style.animationDelay = (i * 0.06) + 's';
+                        var estadoTexto = { pendiente: 'Pendiente', confirmada: 'Confirmada', cancelada: 'Cancelada', completada: 'Completada' }[r.estado] || r.estado;
+                        var acciones = '';
+                        if (r.estado === 'pendiente') {
+                            acciones = '<button class="cancelar" data-codigo="' + r.codigo + '">Cancelar reserva</button>';
+                        } else if (r.estado === 'cancelada') {
+                            acciones = '<button data-codigo="' + r.codigo + '" data-accion="eliminar">Eliminar del historial</button>';
+                        }
+                        card.innerHTML =
+                            '<div>' +
+                                '<div class="reserva-codigo">' + r.codigo + '</div>' +
+                                '<div class="reserva-nombre">' + esc(r.destinoNombre) + '</div>' +
+                                '<div class="reserva-fecha-lugar">' + r.fecha + (r.fechaRegreso && r.fechaRegreso !== r.fecha ? ' → ' + r.fechaRegreso : '') + ' · ' + textoPersonas(r.adultos, r.ninos, r.bebes) + '</div>' +
+                            '</div>' +
+                            '<div>' +
+                                '<div class="reserva-total">' + Q(r.total) + '</div>' +
+                                '<div class="reserva-estado">' + estadoTexto + '</div>' +
+                            '</div>' +
+                            '<div class="reserva-acciones">' +
+                                '<button class="reserva-factura-btn" data-codigo="' + r.codigo + '">Ver factura</button>' +
+                                acciones +
+                            '</div>' +
+                            '<div class="reserva-factura oculto" id="factura-' + r.codigo + '">' + htmlFactura(r) + '</div>';
+                        cont.appendChild(card);
+                    });
+                    cont.querySelectorAll('button').forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            if (btn.classList.contains('reserva-factura-btn')) {
+                                var caja = document.getElementById('factura-' + btn.getAttribute('data-codigo'));
+                                var abierta = !caja.classList.contains('oculto');
+                                caja.classList.toggle('oculto');
+                                btn.textContent = abierta ? 'Ver factura' : 'Ocultar factura';
+                                return;
+                            }
+                            var codigo = btn.getAttribute('data-codigo');
+                            var accion = btn.getAttribute('data-accion');
+                            var fila = lista.find(function (r) { return r.codigo === codigo; });
+                            btn.disabled = true;
+
+                            if (accion === 'eliminar') {
+                                if (!confirm('¿Eliminar esta reserva del historial?')) { btn.disabled = false; return; }
+                                var datos = { codigo: codigo };
+                                if (!estaLogueado() && fila) datos.email = fila.clienteEmail;
+                                api('api/reserva_eliminar.php', datos).then(function (j) {
+                                    if (!j.ok) alert(j.error);
+                                    eliminarReservaLocal(codigo);
+                                    refrescar();
+                                });
+                            } else {
+                                if (!confirm('¿Seguro que quieres cancelar la reserva ' + codigo + '?')) { btn.disabled = false; return; }
+                                var datosC = { codigo: codigo, estado: 'cancelada' };
+                                if (!estaLogueado() && fila) datosC.email = fila.clienteEmail;
+                                api('api/reserva_estado.php', datosC).then(function (j) {
+                                    if (!j.ok) alert(j.error);
+                                    actualizarEstadoReservaLocal(codigo, 'cancelada');
+                                    refrescar();
+                                });
+                            }
+                        });
+                    });
+                }
+                if (alTerminar) alTerminar();
+            });
+        }
+
+        function abrirMisReservas() {
+            cargarReservasUsuario(
+                document.getElementById('mis-reservas-lista'),
+                document.getElementById('mis-reservas-vacio'),
+                function () {
+                    ocultarTodas();
+                    vistaMisReservas.classList.remove('oculto');
+                    window.scrollTo(0, 0);
+                }
+            );
         }
 
         document.getElementById('form-btn-volver').addEventListener('click', function () {
             ocultarTodas();
             vistaDetalle.classList.remove('oculto');
             window.scrollTo(0, 0);
-        });
+        })
         document.getElementById('btn-ver-mis-reservas').addEventListener('click', abrirMisReservas);
         document.getElementById('btn-volver-inicio').addEventListener('click', function () { mostrarInicio(); });
         document.getElementById('mis-reservas-volver').addEventListener('click', function () { mostrarInicio(); });
